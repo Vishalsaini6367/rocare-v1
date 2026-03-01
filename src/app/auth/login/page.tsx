@@ -208,10 +208,10 @@ export default function LoginPage() {
                 </div>
             </div>
 
-            {/* Security Footer */}
+            {/* Official Footer */}
             <div className="mt-8 text-center px-4">
                 <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.25em]">
-                    Industry Standard Security Protocol
+                    Official ROCare Portal
                 </p>
             </div>
 
