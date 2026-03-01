@@ -1,12 +1,5 @@
 @import "tailwindcss";
 
-@theme {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans), 'Inter', system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono);
-}
-
 :root {
   --background: #ffffff;
   --foreground: #0f172a;
@@ -16,6 +9,12 @@
   --slate-100: #f1f5f9;
   --slate-500: #64748b;
   --slate-900: #0f172a;
+
+  /* Tailwind CSS v4 automatically picks up --color-* and --font-* variables from :root */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans), 'Inter', system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono);
 }
 
 html,
