@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
+import { SplashLoader } from "@/components/SplashLoader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -51,6 +52,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <Providers>
+          <SplashLoader />
           {children}
         </Providers>
       </body>
