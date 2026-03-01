@@ -8,7 +8,13 @@ export function SplashLoader() {
     const [shouldRender, setShouldRender] = useState(true);
 
     useEffect(() => {
-        const hasSeenSplash = sessionStorage.getItem('rocare_splash_seen_v2');
+        let hasSeenSplash = false;
+        try {
+            hasSeenSplash = !!sessionStorage.getItem('rocare_splash_seen_v2');
+        } catch (e) {
+            console.warn("Storage access denied:", e);
+        }
+
         if (hasSeenSplash) {
             setShouldRender(false);
             return;
@@ -16,7 +22,11 @@ export function SplashLoader() {
 
         const timer = setTimeout(() => {
             setIsVisible(false);
-            sessionStorage.setItem('rocare_splash_seen_v2', 'true');
+            try {
+                sessionStorage.setItem('rocare_splash_seen_v2', 'true');
+            } catch (e) {
+                // Ignore storage errors on exit
+            }
             setTimeout(() => setShouldRender(false), 1000);
         }, 3500);
 

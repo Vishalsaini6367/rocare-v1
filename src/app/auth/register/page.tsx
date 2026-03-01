@@ -79,113 +79,119 @@ export default function RegisterPage() {
 
     return (
         <div
-            className="bg-slate-50 flex flex-col justify-center items-center px-6"
+            className="bg-slate-50 flex flex-col justify-center items-center px-4 md:px-6"
             style={{
                 minHeight: '100dvh',
-                paddingTop: 'calc(env(safe-area-inset-top) + 2.5rem)',
-                paddingBottom: 'calc(env(safe-area-inset-bottom) + 2.5rem)',
+                paddingTop: 'calc(env(safe-area-inset-top) + 1.5rem)',
+                paddingBottom: 'calc(env(safe-area-inset-bottom) + 1.5rem)',
+                width: '100%',
+                boxSizing: 'border-box'
             }}
         >
-            {/* Logo */}
-            <div className="mx-auto w-full max-w-md text-center mb-10">
-                <Link href="/" className="inline-flex items-center space-x-2 mb-8 group">
-                    <div className="bg-blue-600 p-2 rounded-xl transition" style={{ boxShadow: '0 8px 20px rgba(37,99,235,0.3)' }}>
-                        <Droplet className="w-7 h-7 text-white" />
+            {/* Logo Section */}
+            <div className="w-full max-w-[400px] text-center mb-8 md:mb-10">
+                <Link href="/" className="inline-flex items-center space-x-2 mb-6 md:mb-8 group">
+                    <div className="bg-blue-600 p-2 rounded-xl group-hover:bg-blue-700 transition shadow-lg" style={{ boxShadow: '0 8px 20px rgba(37,99,235,0.3)' }}>
+                        <Droplet className="w-6 h-6 md:w-7 md:h-7 text-white" />
                     </div>
-                    <span className="text-3xl font-black tracking-tighter" style={{ background: 'linear-gradient(to right, #2563eb, #60a5fa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                    <span className="text-2xl md:text-3xl font-black tracking-tighter" style={{ background: 'linear-gradient(to right, #2563eb, #60a5fa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                         ROCare
                     </span>
                 </Link>
-                <h1 style={{ fontSize: '2rem', fontWeight: 900, color: '#0f172a', marginBottom: '0.5rem', letterSpacing: '-0.03em' }}>Create Account</h1>
-                <p style={{ color: '#64748b', fontStyle: 'italic', fontSize: '1rem' }}>Join our ROCare community for premium service</p>
+                <h1 className="text-slate-900" style={{ fontSize: 'clamp(1.75rem, 5vw, 2.25rem)', fontWeight: 900, marginBottom: '0.5rem', letterSpacing: '-0.03em', lineHeight: 1.2 }}>
+                    Create Account
+                </h1>
+                <p className="text-slate-500" style={{ fontStyle: 'italic', fontSize: 'clamp(0.875rem, 3vw, 1rem)' }}>
+                    Join our ROCare community for premium service
+                </p>
             </div>
 
-            {/* Card */}
-            <div className="mx-auto w-full" style={{ maxWidth: '480px' }}>
+            {/* Card Container */}
+            <div className="w-full flex justify-center" style={{ maxWidth: '440px' }}>
                 <div
-                    className="bg-white border border-slate-100"
+                    className="bg-white border border-slate-100 w-full"
                     style={{
                         borderRadius: '2rem',
-                        padding: '2.5rem 2rem',
+                        padding: 'clamp(1.5rem, 5vw, 2.5rem) clamp(1rem, 5vw, 2rem)',
                         boxShadow: '0 25px 50px rgba(0,0,0,0.08)',
                         position: 'relative',
                         overflow: 'hidden',
+                        boxSizing: 'border-box'
                     }}
                 >
                     <div style={{ position: 'absolute', bottom: '-40px', left: '-40px', width: '120px', height: '120px', background: 'rgba(219,234,254,0.5)', borderRadius: '50%', filter: 'blur(40px)' }} />
 
-                    <form className="space-y-5" onSubmit={handleSubmit} style={{ position: 'relative', zIndex: 1 }}>
+                    <form className="space-y-4 md:space-y-5" onSubmit={handleSubmit} style={{ position: 'relative', zIndex: 1 }}>
                         {/* Name */}
-                        <div>
+                        <div className="w-full">
                             <label htmlFor="name" style={labelStyle}>Full Name</label>
                             <div style={{ position: 'relative' }}>
                                 <div style={{ position: 'absolute', top: '50%', left: '1rem', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
-                                    <User style={{ width: '1.1rem', height: '1.1rem', color: '#94a3b8' }} />
+                                    <User style={{ width: '1rem', height: '1rem', color: '#94a3b8' }} />
                                 </div>
                                 <input id="name" type="text" required autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="John Doe" style={inputStyle} onFocus={handleFocus} onBlur={handleBlur} />
                             </div>
                         </div>
 
                         {/* Email */}
-                        <div>
+                        <div className="w-full">
                             <label htmlFor="email" style={labelStyle}>Email Address</label>
                             <div style={{ position: 'relative' }}>
                                 <div style={{ position: 'absolute', top: '50%', left: '1rem', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
-                                    <Mail style={{ width: '1.1rem', height: '1.1rem', color: '#94a3b8' }} />
+                                    <Mail style={{ width: '1rem', height: '1rem', color: '#94a3b8' }} />
                                 </div>
                                 <input id="email" type="email" required autoComplete="email" inputMode="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@example.com" style={inputStyle} onFocus={handleFocus} onBlur={handleBlur} />
                             </div>
                         </div>
 
                         {/* Password */}
-                        <div>
+                        <div className="w-full">
                             <label htmlFor="password" style={labelStyle}>Password</label>
                             <div style={{ position: 'relative' }}>
                                 <div style={{ position: 'absolute', top: '50%', left: '1rem', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
-                                    <Lock style={{ width: '1.1rem', height: '1.1rem', color: '#94a3b8' }} />
+                                    <Lock style={{ width: '1rem', height: '1rem', color: '#94a3b8' }} />
                                 </div>
                                 <input id="password" type="password" required autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" style={inputStyle} onFocus={handleFocus} onBlur={handleBlur} />
                             </div>
                         </div>
 
-                        {/* Submit */}
+                        {/* Submit Button */}
                         <button
                             type="submit"
                             disabled={loading}
+                            className="hover:scale-[1.02] active:scale-95 transition-all"
                             style={{
                                 width: '100%',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 gap: '0.5rem',
-                                padding: '1rem 2rem',
+                                padding: '1rem',
                                 background: loading ? '#93c5fd' : '#2563eb',
                                 color: 'white',
                                 fontWeight: 800,
-                                fontSize: '1.05rem',
+                                fontSize: '1rem',
                                 borderRadius: '1rem',
                                 border: 'none',
                                 cursor: loading ? 'not-allowed' : 'pointer',
                                 boxShadow: '0 10px 30px rgba(37,99,235,0.3)',
                                 WebkitAppearance: 'none',
                                 marginTop: '0.5rem',
+                                boxSizing: 'border-box'
                             }}
                         >
                             {loading ? (
-                                <>
-                                    <Loader2 style={{ width: '1.25rem', height: '1.25rem', animation: 'spin 1s linear infinite' }} />
-                                    <span>Creating Account...</span>
-                                </>
+                                <Loader2 className="w-5 h-5 animate-spin" />
                             ) : (
                                 <>
                                     <span>Create Account</span>
-                                    <ArrowRight style={{ width: '1.1rem', height: '1.1rem' }} />
+                                    <ArrowRight className="w-4 h-4 ml-1" />
                                 </>
                             )}
                         </button>
 
-                        <div style={{ textAlign: 'center', paddingTop: '0.5rem' }}>
-                            <Link href="/auth/login" style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textDecoration: 'none' }}>
+                        <div className="text-center pt-2">
+                            <Link href="/auth/login" className="text-blue-600 font-bold text-sm tracking-tight hover:underline">
                                 Already have an account? Sign in
                             </Link>
                         </div>
@@ -193,7 +199,10 @@ export default function RegisterPage() {
                 </div>
             </div>
 
-            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+            <style jsx>{`
+                @keyframes spin { to { transform: rotate(360deg); } }
+                .animate-spin { animation: spin 1s linear infinite; }
+            `}</style>
         </div>
     );
 }

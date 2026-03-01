@@ -44,51 +44,58 @@ export default function LoginPage() {
 
     return (
         <div
-            className="bg-slate-50 flex flex-col justify-center items-center px-6"
+            className="bg-slate-50 flex flex-col justify-center items-center px-4 md:px-6"
             style={{
                 minHeight: '100dvh',
-                paddingTop: 'calc(env(safe-area-inset-top) + 2.5rem)',
-                paddingBottom: 'calc(env(safe-area-inset-bottom) + 2.5rem)',
+                paddingTop: 'calc(env(safe-area-inset-top) + 1.5rem)',
+                paddingBottom: 'calc(env(safe-area-inset-bottom) + 1.5rem)',
+                width: '100%',
+                boxSizing: 'border-box'
             }}
         >
-            {/* Logo */}
-            <div className="mx-auto w-full max-w-md text-center mb-10">
-                <Link href="/" className="inline-flex items-center space-x-2 mb-8 group">
+            {/* Logo Section */}
+            <div className="w-full max-w-[400px] text-center mb-8 md:mb-10">
+                <Link href="/" className="inline-flex items-center space-x-2 mb-6 md:mb-8 group">
                     <div className="bg-blue-600 p-2 rounded-xl group-hover:bg-blue-700 transition shadow-lg" style={{ boxShadow: '0 8px 20px rgba(37,99,235,0.3)' }}>
-                        <Droplet className="w-7 h-7 text-white" />
+                        <Droplet className="w-6 h-6 md:w-7 md:h-7 text-white" />
                     </div>
-                    <span className="text-3xl font-black tracking-tighter" style={{ background: 'linear-gradient(to right, #2563eb, #60a5fa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                    <span className="text-2xl md:text-3xl font-black tracking-tighter" style={{ background: 'linear-gradient(to right, #2563eb, #60a5fa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                         ROCare
                     </span>
                 </Link>
-                <h1 style={{ fontSize: '2rem', fontWeight: 900, color: '#0f172a', marginBottom: '0.5rem', letterSpacing: '-0.03em' }}>Welcome Back</h1>
-                <p style={{ color: '#64748b', fontStyle: 'italic', fontSize: '1rem' }}>Please sign in to your ROCare account</p>
+                <h1 className="text-slate-900" style={{ fontSize: 'clamp(1.75rem, 5vw, 2.25rem)', fontWeight: 900, marginBottom: '0.5rem', letterSpacing: '-0.03em', lineHeight: 1.2 }}>
+                    Welcome Back
+                </h1>
+                <p className="text-slate-500" style={{ fontStyle: 'italic', fontSize: 'clamp(0.875rem, 3vw, 1rem)' }}>
+                    Please sign in to your ROCare account
+                </p>
             </div>
 
-            {/* Card */}
-            <div className="mx-auto w-full" style={{ maxWidth: '480px' }}>
+            {/* Login Card Container */}
+            <div className="w-full flex justify-center" style={{ maxWidth: '440px' }}>
                 <div
-                    className="bg-white border border-slate-100"
+                    className="bg-white border border-slate-100 w-full"
                     style={{
                         borderRadius: '2rem',
-                        padding: '2.5rem 2rem',
+                        padding: 'clamp(1.5rem, 5vw, 2.5rem) clamp(1rem, 5vw, 2rem)',
                         boxShadow: '0 25px 50px rgba(0,0,0,0.08)',
                         position: 'relative',
                         overflow: 'hidden',
+                        boxSizing: 'border-box'
                     }}
                 >
-                    {/* Background blob */}
+                    {/* Visual Flare */}
                     <div style={{ position: 'absolute', top: '-40px', right: '-40px', width: '120px', height: '120px', background: 'rgba(219,234,254,0.5)', borderRadius: '50%', filter: 'blur(40px)' }} />
 
-                    <form className="space-y-6" onSubmit={handleSubmit} style={{ position: 'relative', zIndex: 1 }}>
-                        {/* Email */}
-                        <div>
-                            <label htmlFor="email" style={{ display: 'block', fontSize: '0.7rem', fontWeight: 800, color: '#475569', marginBottom: '0.5rem', paddingLeft: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.12em' }}>
+                    <form className="space-y-5 md:space-y-6" onSubmit={handleSubmit} style={{ position: 'relative', zIndex: 1 }}>
+                        {/* Email Input */}
+                        <div className="w-full">
+                            <label htmlFor="email" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 800, color: '#475569', marginBottom: '0.4rem', paddingLeft: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.12em' }}>
                                 Email Address
                             </label>
                             <div style={{ position: 'relative' }}>
                                 <div style={{ position: 'absolute', top: '50%', left: '1rem', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
-                                    <Mail style={{ width: '1.1rem', height: '1.1rem', color: '#94a3b8' }} />
+                                    <Mail style={{ width: '1rem', height: '1rem', color: '#94a3b8' }} />
                                 </div>
                                 <input
                                     id="email"
@@ -99,37 +106,33 @@ export default function LoginPage() {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="name@example.com"
+                                    className="w-full focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none"
                                     style={{
                                         display: 'block',
-                                        width: '100%',
-                                        paddingLeft: '2.75rem',
+                                        paddingLeft: '2.5rem',
                                         paddingRight: '1rem',
-                                        paddingTop: '0.9rem',
-                                        paddingBottom: '0.9rem',
+                                        paddingTop: '0.8rem',
+                                        paddingBottom: '0.8rem',
                                         background: '#f8fafc',
                                         border: '2px solid #f1f5f9',
                                         borderRadius: '1rem',
                                         color: '#0f172a',
                                         fontWeight: 600,
                                         fontSize: '0.95rem',
-                                        outline: 'none',
-                                        WebkitAppearance: 'none',
-                                        boxSizing: 'border-box',
+                                        boxSizing: 'border-box'
                                     }}
-                                    onFocus={(e) => { e.target.style.borderColor = '#3b82f6'; e.target.style.boxShadow = '0 0 0 4px rgba(59,130,246,0.1)'; }}
-                                    onBlur={(e) => { e.target.style.borderColor = '#f1f5f9'; e.target.style.boxShadow = 'none'; }}
                                 />
                             </div>
                         </div>
 
-                        {/* Password */}
-                        <div>
-                            <label htmlFor="password" style={{ display: 'block', fontSize: '0.7rem', fontWeight: 800, color: '#475569', marginBottom: '0.5rem', paddingLeft: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.12em' }}>
+                        {/* Password Input */}
+                        <div className="w-full">
+                            <label htmlFor="password" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 800, color: '#475569', marginBottom: '0.4rem', paddingLeft: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.12em' }}>
                                 Password
                             </label>
                             <div style={{ position: 'relative' }}>
                                 <div style={{ position: 'absolute', top: '50%', left: '1rem', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
-                                    <Lock style={{ width: '1.1rem', height: '1.1rem', color: '#94a3b8' }} />
+                                    <Lock style={{ width: '1rem', height: '1rem', color: '#94a3b8' }} />
                                 </div>
                                 <input
                                     id="password"
@@ -139,25 +142,21 @@ export default function LoginPage() {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="••••••••"
+                                    className="w-full focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none"
                                     style={{
                                         display: 'block',
-                                        width: '100%',
-                                        paddingLeft: '2.75rem',
+                                        paddingLeft: '2.5rem',
                                         paddingRight: '1rem',
-                                        paddingTop: '0.9rem',
-                                        paddingBottom: '0.9rem',
+                                        paddingTop: '0.8rem',
+                                        paddingBottom: '0.8rem',
                                         background: '#f8fafc',
                                         border: '2px solid #f1f5f9',
                                         borderRadius: '1rem',
                                         color: '#0f172a',
                                         fontWeight: 600,
                                         fontSize: '0.95rem',
-                                        outline: 'none',
-                                        WebkitAppearance: 'none',
-                                        boxSizing: 'border-box',
+                                        boxSizing: 'border-box'
                                     }}
-                                    onFocus={(e) => { e.target.style.borderColor = '#3b82f6'; e.target.style.boxShadow = '0 0 0 4px rgba(59,130,246,0.1)'; }}
-                                    onBlur={(e) => { e.target.style.borderColor = '#f1f5f9'; e.target.style.boxShadow = 'none'; }}
                                 />
                             </div>
                         </div>
@@ -166,58 +165,59 @@ export default function LoginPage() {
                         <button
                             type="submit"
                             disabled={loading}
+                            className="hover:scale-[1.02] active:scale-95 transition-all"
                             style={{
                                 width: '100%',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 gap: '0.5rem',
-                                padding: '1rem 2rem',
+                                padding: '1rem',
                                 background: loading ? '#93c5fd' : '#2563eb',
                                 color: 'white',
                                 fontWeight: 800,
-                                fontSize: '1.05rem',
+                                fontSize: '1rem',
                                 borderRadius: '1rem',
                                 border: 'none',
                                 cursor: loading ? 'not-allowed' : 'pointer',
                                 boxShadow: '0 10px 30px rgba(37,99,235,0.3)',
-                                transition: 'all 0.2s ease',
                                 WebkitAppearance: 'none',
+                                boxSizing: 'border-box'
                             }}
                         >
                             {loading ? (
-                                <>
-                                    <Loader2 style={{ width: '1.25rem', height: '1.25rem', animation: 'spin 1s linear infinite' }} />
-                                    <span>Signing in...</span>
-                                </>
+                                <Loader2 className="w-5 h-5 animate-spin" />
                             ) : (
                                 <>
                                     <span>Sign In</span>
-                                    <ArrowRight style={{ width: '1.1rem', height: '1.1rem' }} />
+                                    <ArrowRight className="w-4 h-4 ml-1" />
                                 </>
                             )}
                         </button>
 
-                        {/* Links */}
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem', paddingTop: '0.5rem' }}>
-                            <Link href="/auth/register" style={{ color: '#2563eb', fontWeight: 700, fontSize: '0.875rem', textDecoration: 'none', borderBottom: '1px solid transparent' }}>
+                        {/* Helper Links */}
+                        <div className="flex flex-col items-center gap-3 pt-4">
+                            <Link href="/auth/register" className="text-blue-600 font-bold text-sm tracking-tight hover:underline">
                                 Don&apos;t have an account? Sign up
                             </Link>
-                            <Link href="#" style={{ color: '#94a3b8', fontWeight: 600, fontSize: '0.8rem', textDecoration: 'none' }}>
+                            <Link href="#" className="text-slate-400 font-bold text-xs tracking-tight hover:text-slate-500">
                                 Forgot password?
                             </Link>
                         </div>
                     </form>
                 </div>
+            </div>
 
-                <p style={{ marginTop: '2rem', textAlign: 'center', color: '#94a3b8', fontSize: '0.65rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em' }}>
+            {/* Security Footer */}
+            <div className="mt-8 text-center px-4">
+                <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.25em]">
                     Industry Standard Security Protocol
                 </p>
             </div>
 
-            {/* Spin animation */}
-            <style>{`
+            <style jsx>{`
                 @keyframes spin { to { transform: rotate(360deg); } }
+                .animate-spin { animation: spin 1s linear infinite; }
             `}</style>
         </div>
     );

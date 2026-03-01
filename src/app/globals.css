@@ -21,13 +21,21 @@
 html,
 body {
   height: 100%;
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
+  margin: 0;
+  padding: 0;
+  background: var(--background, #ffffff);
+  color: var(--foreground, #0f172a);
+  font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
   -webkit-tap-highlight-color: transparent;
   scroll-behavior: smooth;
-  /* iOS PWA full screen */
   -webkit-overflow-scrolling: touch;
+  /* Ensure mobile scaling works */
+  min-width: 320px;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 /* Custom Typography - explicit (no @apply to avoid iOS Safari CSS parse issues) */
