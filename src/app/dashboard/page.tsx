@@ -30,17 +30,20 @@ export default function DashboardPage() {
     const fetchData = async () => {
         try {
             const [complaintsRes, ordersRes] = await Promise.all([
-                fetch('/api/complaints'),
-                fetch('/api/orders')
+                fetch('/api/complaints', { cache: 'no-store' }),
+                fetch('/api/orders', { cache: 'no-store' })
             ]);
 
             const complaintsData = await complaintsRes.json();
             const ordersData = await ordersRes.json();
 
-            setComplaints(complaintsData.slice(0, 3));
-            setOrders(ordersData.slice(0, 3));
+            setComplaints(Array.isArray(complaintsData) ? complaintsData.slice(0, 3) : []);
+            setOrders(Array.isArray(ordersData) ? ordersData.slice(0, 3) : []);
         } catch (error) {
+            console.error(error);
             toast.error('Failed to sync data');
+            setComplaints([]);
+            setOrders([]);
         } finally {
             setLoading(false);
         }

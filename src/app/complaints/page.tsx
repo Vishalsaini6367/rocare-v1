@@ -23,9 +23,9 @@ export default function UserComplaintsPage() {
 
     const fetchComplaints = async () => {
         try {
-            const response = await fetch('/api/complaints');
+            const response = await fetch('/api/complaints', { cache: 'no-store' });
             const data = await response.json();
-            setComplaints(data);
+            setComplaints(Array.isArray(data) ? data : []);
         } catch (error) {
             toast.error('Failed to fetch complaints');
         } finally {
