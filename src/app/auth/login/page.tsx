@@ -17,31 +17,36 @@ export default function LoginPage() {
         e.preventDefault();
         setLoading(true);
 
-        const result = await signIn('credentials', {
-            redirect: false,
-            email,
-            password,
-        });
+        try {
+            const result = await signIn('credentials', {
+                redirect: false,
+                email: email.trim().toLowerCase(),
+                password,
+            });
 
-        if (result?.error) {
-            toast.error('Invalid email or password');
-            setLoading(false);
-        } else {
-            toast.success('Logged in successfully!');
-            // Get the session to determine role-based redirect
-            const session = await getSession();
-            const role = (session?.user as any)?.role;
-            if (role === 'admin') {
-                router.push('/admin');
+            if (result?.error) {
+                toast.error('Invalid email or password');
+                setLoading(false);
             } else {
-                router.push('/dashboard');
+                toast.success('Logged in successfully!');
+                const session = await getSession();
+                const role = (session?.user as any)?.role;
+                // Use window.location.href for PWA standalone mode on iOS
+                if (role === 'admin') {
+                    window.location.replace('/admin');
+                } else {
+                    window.location.replace('/dashboard');
+                }
             }
-            router.refresh();
+        } catch (err) {
+            console.error('Login error:', err);
+            toast.error('Something went wrong. Please try again.');
+            setLoading(false);
         }
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 flex flex-col justify-center items-center py-10 px-6 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-slate-50 flex flex-col justify-center items-center py-10 px-6 sm:px-6 lg:px-8" style={{ minHeight: '100dvh' }}>
             <div className="mx-auto w-full max-w-md text-center">
                 <Link href="/" className="inline-flex items-center space-x-2 mb-8 group">
                     <div className="bg-blue-600 p-2 md:p-2.5 rounded-xl md:rounded-2xl group-hover:bg-blue-700 transition shadow-lg shadow-blue-200">
@@ -62,34 +67,38 @@ export default function LoginPage() {
                     <form className="space-y-8 relative z-10" onSubmit={handleSubmit}>
                         <div className="space-y-6">
                             <div className="group/field">
-                                <label className="block text-xs font-black text-slate-700 mb-2 pl-2 group-hover/field:text-blue-600 transition uppercase tracking-widest">Email address</label>
+                                <label htmlFor="email" className="block text-xs font-black text-slate-700 mb-2 pl-2 group-hover/field:text-blue-600 transition uppercase tracking-widest">Email address</label>
                                 <div className="relative">
                                     <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
                                         <Mail className="h-4 w-4 md:h-5 md:w-5 text-slate-400 group-hover/field:text-blue-500 transition" />
                                     </div>
                                     <input
+                                        id="email"
                                         type="email"
                                         required
+                                        autoComplete="email"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        className="block w-full pl-12 md:pl-14 pr-6 py-4 md:py-4.5 bg-slate-50 border-2 border-slate-50 rounded-[1.5rem] md:rounded-2xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-bold text-sm md:text-base"
+                                        className="block w-full pl-12 md:pl-14 pr-6 py-4 bg-slate-50 border-2 border-slate-50 rounded-[1.5rem] md:rounded-2xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-bold text-sm md:text-base"
                                         placeholder="name@example.com"
                                     />
                                 </div>
                             </div>
 
                             <div className="group/field">
-                                <label className="block text-xs font-black text-slate-700 mb-2 pl-2 group-hover/field:text-blue-600 transition uppercase tracking-widest">Password</label>
+                                <label htmlFor="password" className="block text-xs font-black text-slate-700 mb-2 pl-2 group-hover/field:text-blue-600 transition uppercase tracking-widest">Password</label>
                                 <div className="relative">
                                     <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
                                         <Lock className="h-4 w-4 md:h-5 md:w-5 text-slate-400 group-hover/field:text-blue-500 transition" />
                                     </div>
                                     <input
+                                        id="password"
                                         type="password"
                                         required
+                                        autoComplete="current-password"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
-                                        className="block w-full pl-12 md:pl-14 pr-6 py-4 md:py-4.5 bg-slate-50 border-2 border-slate-50 rounded-[1.5rem] md:rounded-2xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-bold text-sm md:text-base"
+                                        className="block w-full pl-12 md:pl-14 pr-6 py-4 bg-slate-50 border-2 border-slate-50 rounded-[1.5rem] md:rounded-2xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-bold text-sm md:text-base"
                                         placeholder="••••••••"
                                     />
                                 </div>
@@ -112,7 +121,7 @@ export default function LoginPage() {
                         </button>
 
                         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs md:text-sm font-bold">
-                            <Link href="/auth/register" className="text-blue-600 hover:text-blue-500 transition border-b border-transparent hover:border-blue-500 pb-0.5">Don't have an account? Sign up</Link>
+                            <Link href="/auth/register" className="text-blue-600 hover:text-blue-500 transition border-b border-transparent hover:border-blue-500 pb-0.5">Don&apos;t have an account? Sign up</Link>
                             <Link href="#" className="text-slate-400 hover:text-slate-600 transition">Forgot password?</Link>
                         </div>
                     </form>

@@ -1,12 +1,7 @@
 import type { NextConfig } from "next";
 
-const withPWA = require("next-pwa")({
-  dest: "public",
-  disable: process.env.NODE_ENV === "development",
-  register: true,
-  skipWaiting: true,
-});
-
+// Disable next-pwa automatic sw generation to use our custom sw.js
+// next-pwa's auto-generated sw causes iOS PWA crashes with stale caches
 const nextConfig: NextConfig = {
   experimental: {
     serverActions: {
@@ -15,7 +10,25 @@ const nextConfig: NextConfig = {
   },
   typescript: {
     ignoreBuildErrors: true,
-  }
+  },
+  // Ensure headers allow PWA Service Worker scope
+  async headers() {
+    return [
+      {
+        source: '/sw.js',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=0, must-revalidate' },
+          { key: 'Service-Worker-Allowed', value: '/' },
+        ],
+      },
+      {
+        source: '/manifest.json',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=0, must-revalidate' },
+        ],
+      },
+    ];
+  },
 };
 
-export default process.env.NODE_ENV === "production" ? withPWA(nextConfig) : nextConfig;
+export default nextConfig;
