@@ -146,7 +146,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                     <span>Product Catalog</span>
                 </Link>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-20">
+                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-[1fr_1fr_320px] gap-10 md:gap-12">
                     {/* Left Column: Image Container */}
                     <div className="space-y-6 md:space-y-10 group/img">
                         <div className="bg-white p-8 md:p-16 rounded-[2.5rem] md:rounded-[4rem] shadow-2xl border border-slate-100 relative overflow-hidden flex items-center justify-center aspect-square shadow-blue-200/20 group-hover/img:shadow-blue-300/40 transition duration-500 border-2 border-transparent group-hover/img:border-blue-600/10">
@@ -243,6 +243,96 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                         <p className="mt-10 text-center text-slate-400 font-bold text-[8px] md:text-xs uppercase tracking-[0.2em] italic px-4">
                             FREE SHIPPING • CASH ON DELIVERY ONLY
                         </p>
+
+                        {/* Call for Discount - Mobile (shown below CTA on small screens) */}
+                        <div className="xl:hidden mt-8 rounded-[1.5rem] overflow-hidden shadow-2xl border border-amber-100">
+                            <div className="bg-gradient-to-br from-amber-500 to-orange-500 px-6 py-5 flex items-center space-x-3">
+                                <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                                    <Phone className="w-5 h-5 text-white" />
+                                </div>
+                                <div>
+                                    <p className="text-white font-black text-base leading-none">Call for Discount</p>
+                                    <p className="text-amber-100 text-[10px] font-bold uppercase tracking-widest mt-0.5">Get exclusive price on call</p>
+                                </div>
+                            </div>
+                            <div className="bg-white p-4 grid grid-cols-2 gap-3">
+                                <a
+                                    href="tel:+919214651276"
+                                    className="flex flex-col items-center p-4 bg-amber-50 rounded-xl border border-amber-100 hover:bg-amber-100 transition active:scale-95 group"
+                                >
+                                    <div className="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center mb-2 group-hover:scale-110 transition shadow-lg shadow-amber-200">
+                                        <Phone className="w-5 h-5 text-white" />
+                                    </div>
+                                    <span className="text-slate-900 font-black text-sm">9214651276</span>
+                                    <span className="text-amber-600 font-bold text-[9px] uppercase tracking-widest mt-0.5">Tap to Call</span>
+                                </a>
+                                <a
+                                    href="tel:+918209280619"
+                                    className="flex flex-col items-center p-4 bg-amber-50 rounded-xl border border-amber-100 hover:bg-amber-100 transition active:scale-95 group"
+                                >
+                                    <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center mb-2 group-hover:scale-110 transition shadow-lg shadow-orange-200">
+                                        <Phone className="w-5 h-5 text-white" />
+                                    </div>
+                                    <span className="text-slate-900 font-black text-sm">8209280619</span>
+                                    <span className="text-orange-600 font-bold text-[9px] uppercase tracking-widest mt-0.5">Tap to Call</span>
+                                </a>
+                            </div>
+                            <div className="bg-amber-50 px-5 py-3 border-t border-amber-100">
+                                <p className="text-center text-amber-700 text-[10px] font-bold uppercase tracking-widest">⚡ Special discounts available on call</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Right Sidebar: Call for Discount (Desktop only - sticky) */}
+                    <div className="hidden xl:block">
+                        <div className="sticky top-28">
+                            <div className="rounded-[2rem] overflow-hidden shadow-2xl border border-amber-100">
+                                {/* Header */}
+                                <div className="bg-gradient-to-br from-amber-500 to-orange-500 px-6 py-8 text-center relative overflow-hidden">
+                                    <div className="absolute top-0 right-0 w-20 h-20 bg-white/10 rounded-full blur-2xl transform translate-x-4 -translate-y-4" />
+                                    <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-inner">
+                                        <Phone className="w-7 h-7 text-white" />
+                                    </div>
+                                    <h3 className="text-white font-black text-xl leading-tight mb-1">Call for Discount</h3>
+                                    <p className="text-amber-100 text-xs font-bold uppercase tracking-widest">Exclusive Price on Call</p>
+                                </div>
+
+                                {/* Numbers */}
+                                <div className="bg-white p-5 space-y-3">
+                                    <a
+                                        href="tel:+919214651276"
+                                        className="flex items-center space-x-4 p-4 bg-amber-50 rounded-2xl border border-amber-100 hover:bg-amber-100 hover:border-amber-300 transition-all active:scale-95 group block"
+                                    >
+                                        <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition shadow-lg shadow-amber-200">
+                                            <Phone className="w-6 h-6 text-white" />
+                                        </div>
+                                        <div>
+                                            <span className="block text-[9px] font-black text-amber-600 uppercase tracking-widest mb-0.5">Call Now</span>
+                                            <span className="text-slate-900 font-black text-lg tracking-tight">92146 51276</span>
+                                        </div>
+                                    </a>
+
+                                    <a
+                                        href="tel:+918209280619"
+                                        className="flex items-center space-x-4 p-4 bg-orange-50 rounded-2xl border border-orange-100 hover:bg-orange-100 hover:border-orange-300 transition-all active:scale-95 group block"
+                                    >
+                                        <div className="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition shadow-lg shadow-orange-200">
+                                            <Phone className="w-6 h-6 text-white" />
+                                        </div>
+                                        <div>
+                                            <span className="block text-[9px] font-black text-orange-600 uppercase tracking-widest mb-0.5">Call Now</span>
+                                            <span className="text-slate-900 font-black text-lg tracking-tight">82092 80619</span>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                {/* Footer */}
+                                <div className="bg-gradient-to-br from-amber-50 to-orange-50 px-5 py-4 border-t border-amber-100">
+                                    <p className="text-center text-amber-700 text-[10px] font-bold uppercase tracking-widest leading-relaxed">⚡ Special discounts &amp; offers available on call</p>
+                                    <p className="text-center text-slate-400 text-[9px] font-bold mt-1">Mon–Sat · 9AM to 7PM</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </main>
