@@ -16,14 +16,10 @@ export default function AdminProductsPage() {
     const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
-        if (status === 'unauthenticated') {
-            router.push('/auth/login');
-        } else if (session && (session.user as any).role !== 'admin') {
-            router.push('/dashboard');
-        } else if (status === 'authenticated') {
+        if (status === 'authenticated') {
             fetchProducts();
         }
-    }, [status, session]);
+    }, [status]);
 
     const fetchProducts = async () => {
         try {

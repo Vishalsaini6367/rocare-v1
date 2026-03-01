@@ -16,16 +16,10 @@ export default function DashboardPage() {
     const router = useRouter();
 
     useEffect(() => {
-        if (status === 'unauthenticated') {
-            router.push('/auth/login');
+        if (status === 'authenticated') {
+            fetchData();
         }
-    }, [status, router]);
-
-    useEffect(() => {
-        if (session && (session.user as any).role === 'admin') {
-            router.push('/admin');
-        }
-    }, [session, router]);
+    }, [status]);
 
     useEffect(() => {
         if (session) {

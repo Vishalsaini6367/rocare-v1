@@ -20,8 +20,10 @@ async function dbConnect() {
     if (!cached.promise) {
         const opts = {
             bufferCommands: false,
-            serverSelectionTimeoutMS: 10000,
+            serverSelectionTimeoutMS: 5000,
             socketTimeoutMS: 45000,
+            maxPoolSize: 10,
+            minPoolSize: 5,
             family: 4,
             tls: true,
             retryWrites: true,

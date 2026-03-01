@@ -19,7 +19,16 @@ export default withAuth(
             return NextResponse.redirect(new URL('/auth/login', req.url));
         }
 
-        if (isAdminPage && token.role !== 'admin') {
+        const isDashboard = req.nextUrl.pathname === '/dashboard';
+        const role = token.role;
+
+        // Admin visiting user dashboard
+        if (isDashboard && role === 'admin') {
+            return NextResponse.redirect(new URL('/admin', req.url));
+        }
+
+        // User visiting admin pages
+        if (isAdminPage && role !== 'admin') {
             return NextResponse.redirect(new URL('/dashboard', req.url));
         }
     },

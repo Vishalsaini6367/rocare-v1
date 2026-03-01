@@ -14,14 +14,10 @@ export default function AdminDashboardPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (status === 'unauthenticated') {
-            router.push('/auth/login');
-        } else if (session && (session.user as any).role !== 'admin') {
-            router.push('/dashboard');
-        } else if (status === 'authenticated') {
+        if (status === 'authenticated') {
             fetchStats();
         }
-    }, [session, status, router]);
+    }, [status]);
 
     const fetchStats = async () => {
         try {

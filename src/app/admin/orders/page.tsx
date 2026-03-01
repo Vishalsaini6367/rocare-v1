@@ -15,14 +15,10 @@ export default function AdminOrdersPage() {
     const [activeTab, setActiveTab] = useState<'all' | 'Pending' | 'Confirmed' | 'Out for Delivery' | 'Delivered'>('all');
 
     useEffect(() => {
-        if (status === 'unauthenticated') {
-            router.push('/auth/login');
-        } else if (session && (session.user as any).role !== 'admin') {
-            router.push('/dashboard');
-        } else if (status === 'authenticated') {
+        if (status === 'authenticated') {
             fetchOrders();
         }
-    }, [session, status, router]);
+    }, [status]);
 
     const fetchOrders = async () => {
         try {
