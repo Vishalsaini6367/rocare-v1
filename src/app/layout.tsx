@@ -18,7 +18,12 @@ export const metadata: Metadata = {
   description: "Expert RO water purifier service, repair, and shopping platform.",
   manifest: "/manifest.json",
   themeColor: "#2563eb",
-  viewport: "minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "ROCare",
+  },
+  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover",
 };
 
 export default function RootLayout({
@@ -28,6 +33,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3105/3105807.png" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

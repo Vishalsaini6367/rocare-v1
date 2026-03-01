@@ -52,14 +52,27 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="mt-20 lg:mt-0 relative px-4">
+            <div className="mt-16 lg:mt-0 relative px-4">
               <div className="absolute -inset-4 bg-gradient-to-tr from-blue-600/10 to-transparent rounded-[3rem] blur-3xl transform -rotate-6"></div>
-              <div className="relative rounded-[3rem] bg-slate-900/5 border border-slate-100 shadow-2xl overflow-hidden aspect-[4/3] glass-morphism">
+              <div className="relative rounded-[2.5rem] md:rounded-[3rem] bg-slate-900/5 border border-slate-100 shadow-2xl overflow-hidden aspect-[4/3] glass-morphism">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-transparent"></div>
-                <div className="w-full h-full flex flex-col items-center justify-center p-8 text-center">
-                  <Droplet className="w-24 h-24 md:w-32 md:h-32 mb-6 animate-float text-blue-500 drop-shadow-2xl" />
-                  <span className="text-sm font-black tracking-[0.3em] uppercase text-blue-600 opacity-50">High Performance</span>
-                  <p className="mt-2 text-slate-900 font-black text-xl italic tracking-tighter">Premium RO Technology</p>
+                <div className="w-full h-full flex flex-col items-center justify-center p-6 md:p-8 text-center">
+                  <Droplet className="w-20 h-20 md:w-32 md:h-32 mb-4 md:mb-6 animate-float text-blue-500 drop-shadow-2xl" />
+                  <span className="text-[10px] md:text-sm font-black tracking-[0.3em] uppercase text-blue-600 opacity-50">High Performance</span>
+                  <p className="mt-2 text-slate-900 font-black text-lg md:text-xl italic tracking-tighter">Premium RO Technology</p>
+                </div>
+              </div>
+
+              {/* iOS Install Prompt Hint */}
+              <div className="mt-8 p-6 bg-blue-600 text-white rounded-[2rem] shadow-xl md:hidden animate-bounce-slow">
+                <div className="flex items-center space-x-4">
+                  <div className="p-2 bg-white/20 rounded-xl">
+                    <Zap className="w-5 h-5" />
+                  </div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest leading-tight">
+                    Install ROCare App: <br />
+                    Tap Share + "Add to Home Screen"
+                  </p>
                 </div>
               </div>
             </div>
