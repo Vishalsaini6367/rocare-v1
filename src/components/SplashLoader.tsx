@@ -1,15 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Droplet } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export function SplashLoader() {
     const [isVisible, setIsVisible] = useState(true);
     const [shouldRender, setShouldRender] = useState(true);
 
     useEffect(() => {
-        // Only show splash on the first visit in a session
-        const hasSeenSplash = sessionStorage.getItem('rocare_splash_seen');
+        const hasSeenSplash = sessionStorage.getItem('rocare_splash_seen_v2');
         if (hasSeenSplash) {
             setShouldRender(false);
             return;
@@ -17,10 +16,9 @@ export function SplashLoader() {
 
         const timer = setTimeout(() => {
             setIsVisible(false);
-            sessionStorage.setItem('rocare_splash_seen', 'true');
-            // Remove from DOM after fade out
-            setTimeout(() => setShouldRender(false), 800);
-        }, 2200);
+            sessionStorage.setItem('rocare_splash_seen_v2', 'true');
+            setTimeout(() => setShouldRender(false), 1000);
+        }, 3500);
 
         return () => clearTimeout(timer);
     }, []);
@@ -28,70 +26,143 @@ export function SplashLoader() {
     if (!shouldRender) return null;
 
     return (
-        <div
-            className={`fixed inset-0 z-[9999] bg-white flex flex-col items-center justify-center transition-opacity duration-700 ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-        >
-            <div className="relative">
-                {/* Background Glow */}
-                <div className="absolute inset-0 bg-blue-400/20 blur-[60px] rounded-full scale-150 animate-pulse"></div>
-
-                <div className="relative flex flex-col items-center">
-                    {/* Animated Logo */}
-                    <div className="bg-blue-600 p-6 rounded-[2rem] shadow-2xl shadow-blue-200 mb-8 animate-[splash-bounce_2s_infinite]">
-                        <Droplet className="w-16 h-16 text-white" />
+        <AnimatePresence>
+            {isVisible && (
+                <motion.div
+                    initial={{ opacity: 1 }}
+                    exit={{
+                        opacity: 0,
+                        scale: 1.1,
+                        filter: "blur(20px)",
+                        transition: { duration: 0.8, ease: "easeInOut" }
+                    }}
+                    className="fixed inset-0 z-[9999] bg-slate-900 flex items-center justify-center overflow-hidden"
+                >
+                    {/* Dynamic Particle Background */}
+                    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                        {[...Array(20)].map((_, i) => (
+                            <motion.div
+                                key={i}
+                                initial={{
+                                    x: Math.random() * 100 + "%",
+                                    y: "110%",
+                                    scale: Math.random() * 0.5 + 0.5,
+                                    opacity: 0
+                                }}
+                                animate={{
+                                    y: "-10%",
+                                    opacity: [0, 0.5, 0],
+                                }}
+                                transition={{
+                                    duration: Math.random() * 3 + 2,
+                                    delay: Math.random() * 2,
+                                    repeat: Infinity,
+                                    ease: "linear"
+                                }}
+                                className="absolute w-1 h-1 bg-blue-400 rounded-full blur-[2px]"
+                            />
+                        ))}
                     </div>
 
-                    {/* Animated Name */}
-                    <div className="overflow-hidden">
-                        <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-slate-900 animate-[text-reveal_1.2s_ease-out_forwards]">
-                            <span className="bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
-                                ROCare
-                            </span>
-                        </h1>
-                    </div>
+                    {/* Central Interactive Animation */}
+                    <div className="relative flex flex-col items-center">
+                        {/* Ripple Effect Layers */}
+                        <motion.div
+                            initial={{ scale: 0, opacity: 0 }}
+                            animate={{ scale: [0, 1.5], opacity: [0.5, 0] }}
+                            transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+                            className="absolute w-64 h-64 border-2 border-blue-500/30 rounded-full"
+                        />
+                        <motion.div
+                            initial={{ scale: 0, opacity: 0 }}
+                            animate={{ scale: [0, 1.5], opacity: [0.3, 0] }}
+                            transition={{ duration: 2, repeat: Infinity, ease: "easeOut", delay: 1 }}
+                            className="absolute w-64 h-64 border-2 border-blue-400/20 rounded-full"
+                        />
 
-                    {/* Subtext */}
-                    <div className="mt-4 flex flex-col items-center animate-[fade-up_1s_ease-out_0.5s_forwards] opacity-0">
-                        <p className="text-slate-400 font-black text-[10px] md:text-sm uppercase tracking-[0.4em] mb-8 italic">
-                            Purifying Life Since 2024
-                        </p>
+                        {/* Main Logo Sphere */}
+                        <motion.div
+                            initial={{ scale: 0, rotate: -180 }}
+                            animate={{ scale: 1, rotate: 0 }}
+                            transition={{
+                                type: "spring",
+                                stiffness: 100,
+                                damping: 15,
+                                delay: 0.2
+                            }}
+                            className="w-32 h-32 md:w-40 md:h-40 bg-gradient-to-tr from-blue-600 to-blue-400 rounded-[2.5rem] flex items-center justify-center shadow-[0_0_50px_rgba(37,99,235,0.5)] relative z-10 group"
+                        >
+                            <motion.div
+                                animate={{
+                                    scale: [1, 1.1, 1],
+                                    rotate: [0, 5, -5, 0]
+                                }}
+                                transition={{ duration: 3, repeat: Infinity }}
+                            >
+                                <svg viewBox="0 0 24 24" className="w-16 h-16 md:w-20 md:h-20 text-white fill-current drop-shadow-lg">
+                                    <path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z" />
+                                </svg>
+                            </motion.div>
+                        </motion.div>
 
-                        {/* Professional Loading Line */}
-                        <div className="w-48 h-1 bg-slate-100 rounded-full overflow-hidden">
-                            <div className="h-full bg-blue-600 w-full animate-[loading-bar_2s_ease-in-out_infinite] origin-left"></div>
+                        {/* Liquid Text Reveal */}
+                        <div className="mt-12 flex flex-col items-center">
+                            <motion.div
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.8 }}
+                                className="relative"
+                            >
+                                <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-white">
+                                    RO<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Care</span>
+                                </h1>
+                                {/* Shimmer Effect */}
+                                <motion.div
+                                    animate={{ x: ["-100%", "200%"] }}
+                                    transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent w-full h-full skew-x-[-20deg] pointer-events-none"
+                                />
+                            </motion.div>
+
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 1.2 }}
+                                className="mt-4 flex flex-col items-center"
+                            >
+                                <div className="flex items-center space-x-3 mb-4">
+                                    <span className="h-px w-8 bg-blue-500/50"></span>
+                                    <p className="text-blue-400 font-bold text-xs md:text-sm uppercase tracking-[0.5em] italic">
+                                        Advanced Water Care
+                                    </p>
+                                    <span className="h-px w-8 bg-blue-500/50"></span>
+                                </div>
+
+                                {/* Progress Bar v2 */}
+                                <div className="w-64 h-1.5 bg-white/5 rounded-full overflow-hidden border border-white/10 backdrop-blur-sm">
+                                    <motion.div
+                                        initial={{ width: 0 }}
+                                        animate={{ width: "100%" }}
+                                        transition={{ duration: 2.5, ease: "easeInOut" }}
+                                        className="h-full bg-gradient-to-r from-blue-600 via-blue-400 to-cyan-300 shadow-[0_0_15px_rgba(59,130,246,0.5)]"
+                                    />
+                                </div>
+                            </motion.div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            {/* Credits at Bottom */}
-            <div className="absolute bottom-12 animate-[fade-in_1s_ease-out_1s_forwards] opacity-0">
-                <p className="text-slate-300 font-bold text-[10px] uppercase tracking-widest">A Vishal Saini Product</p>
-            </div>
-
-            <style jsx global>{`
-                @keyframes splash-bounce {
-                    0%, 100% { transform: translateY(0) scale(1); }
-                    50% { transform: translateY(-20px) scale(1.05); }
-                }
-                @keyframes text-reveal {
-                    from { transform: translateY(100%); opacity: 0; }
-                    to { transform: translateY(0); opacity: 1; }
-                }
-                @keyframes fade-up {
-                    from { transform: translateY(20px); opacity: 0; }
-                    to { transform: translateY(0); opacity: 1; }
-                }
-                @keyframes fade-in {
-                    from { opacity: 0; }
-                    to { opacity: 1; }
-                }
-                @keyframes loading-bar {
-                    0% { transform: scaleX(0); }
-                    50% { transform: scaleX(0.7); }
-                    100% { transform: scaleX(1); }
-                }
-            `}</style>
-        </div>
+                    {/* Footer Tagline */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 0.4, y: 0 }}
+                        transition={{ delay: 1.5 }}
+                        className="absolute bottom-12 text-center"
+                    >
+                        <p className="text-white font-black text-[10px] uppercase tracking-[0.4em] mb-2">Designed for Excellence</p>
+                        <p className="text-blue-400 font-bold text-[8px] uppercase tracking-widest">Powered by Vishal Saini</p>
+                    </motion.div>
+                </motion.div>
+            )}
+        </AnimatePresence>
     );
 }
