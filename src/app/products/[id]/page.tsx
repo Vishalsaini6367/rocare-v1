@@ -137,7 +137,47 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         <div className="min-h-screen bg-slate-50">
             <Navbar />
 
-            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 animate-fade-in group">
+            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 animate-fade-in group">
+                {/* Modern Call for Discount Banner - TOP */}
+                <div className="mb-10 animate-fade-in">
+                    <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500 bg-[length:200%_auto] animate-[gradient_3s_linear_infinite] p-1 rounded-[2rem] shadow-2xl shadow-orange-200 group/banner overflow-hidden relative">
+                        <div className="absolute inset-0 bg-white/10 opacity-0 group-hover/banner:opacity-100 transition duration-500 backdrop-blur-sm"></div>
+                        <div className="bg-white rounded-[1.8rem] px-6 md:px-10 py-5 flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
+                            <div className="flex items-center space-x-5 md:space-x-8">
+                                <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-200 animate-bounce-slow shrink-0 rotate-3 group-hover/banner:rotate-0 transition duration-500">
+                                    <Zap className="w-7 h-7 md:w-8 md:h-8 text-white" />
+                                </div>
+                                <div>
+                                    <div className="flex items-center space-x-2 mb-1">
+                                        <h2 className="text-xl md:text-3xl font-black text-slate-900 tracking-tighter uppercase italic">Call for Discount</h2>
+                                        <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
+                                    </div>
+                                    <p className="text-xs md:text-sm text-slate-500 font-bold uppercase tracking-[0.1em] italic leading-tight">
+                                        Active Offer: Book on call and save up to <span className="text-orange-600 font-black">₹1,500 extra</span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className="flex flex-wrap md:flex-nowrap items-center gap-3 w-full md:w-auto">
+                                <a
+                                    href="tel:+919214651276"
+                                    className="flex-1 md:flex-none flex items-center justify-center space-x-3 bg-slate-900 text-white px-6 md:px-8 py-4 rounded-xl md:rounded-2xl font-black text-sm md:text-base hover:bg-slate-800 transition active:scale-95 shadow-xl group/btn"
+                                >
+                                    <Phone className="w-4 h-4 md:w-5 md:h-5 text-amber-500 group-hover/btn:rotate-12 transition" />
+                                    <span>92146 51276</span>
+                                </a>
+                                <a
+                                    href="tel:+918209280619"
+                                    className="flex-1 md:flex-none flex items-center justify-center space-x-3 bg-amber-500 text-white px-6 md:px-8 py-4 rounded-xl md:rounded-2xl font-black text-sm md:text-base hover:bg-amber-600 transition active:scale-95 shadow-xl shadow-amber-200 group/btn"
+                                >
+                                    <Phone className="w-4 h-4 md:w-5 md:h-5 text-white group-hover/btn:rotate-12 transition" />
+                                    <span>82092 80619</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <Link
                     href="/products"
                     className="inline-flex items-center space-x-3 text-slate-500 hover:text-blue-600 transition font-bold uppercase tracking-[0.2em] text-[10px] md:text-xs mb-8 md:mb-10 group/back hover:translate-x-[-8px] transition duration-300"
