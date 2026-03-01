@@ -128,16 +128,8 @@ export function SplashLoader() {
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{ delay: 1.2 }}
-                                className="mt-4 flex flex-col items-center"
+                                className="mt-8 flex flex-col items-center"
                             >
-                                <div className="flex items-center space-x-3 mb-4">
-                                    <span className="h-px w-8 bg-blue-500/50"></span>
-                                    <p className="text-blue-400 font-bold text-xs md:text-sm uppercase tracking-[0.5em] italic">
-                                        Advanced Water Care
-                                    </p>
-                                    <span className="h-px w-8 bg-blue-500/50"></span>
-                                </div>
-
                                 {/* Progress Bar v2 */}
                                 <div className="w-64 h-1.5 bg-white/5 rounded-full overflow-hidden border border-white/10 backdrop-blur-sm">
                                     <motion.div
@@ -150,17 +142,6 @@ export function SplashLoader() {
                             </motion.div>
                         </div>
                     </div>
-
-                    {/* Footer Tagline */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 0.4, y: 0 }}
-                        transition={{ delay: 1.5 }}
-                        className="absolute bottom-12 text-center"
-                    >
-                        <p className="text-white font-black text-[10px] uppercase tracking-[0.4em] mb-2">Designed for Excellence</p>
-                        <p className="text-blue-400 font-bold text-[8px] uppercase tracking-widest">Powered by Vishal Saini</p>
-                    </motion.div>
                 </motion.div>
             )}
         </AnimatePresence>
