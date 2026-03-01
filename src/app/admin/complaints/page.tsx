@@ -3,22 +3,25 @@
 import { useState, useEffect } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { useSession } from 'next-auth/react';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { ClipboardList, User, Phone, MapPin, FileText, CheckCircle, Clock, AlertCircle, Eye, MoreHorizontal, Activity, ArrowRight, TrendingUp } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function AdminComplaintsPage() {
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
+    const router = useRouter();
     const [complaints, setComplaints] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
-    if (session && (session.user as any).role !== 'admin') {
-        redirect('/dashboard');
-    }
-
     useEffect(() => {
-        fetchComplaints();
-    }, []);
+        if (status === 'unauthenticated') {
+            router.push('/auth/login');
+        } else if (session && (session.user as any).role !== 'admin') {
+            router.push('/dashboard');
+        } else if (status === 'authenticated') {
+            fetchComplaints();
+        }
+    }, [session, status, router]);
 
     const fetchComplaints = async () => {
         try {

@@ -3,22 +3,25 @@
 import { useState, useEffect } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { useSession } from 'next-auth/react';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Box, ClipboardList, CheckCircle, Clock, AlertCircle, ShoppingBag, Plus, ArrowUpRight, ArrowRight, BarChart3, TrendingUp, Users, Activity, Package, Truck } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AdminDashboardPage() {
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
+    const router = useRouter();
     const [stats, setStats] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
-    if (session && (session.user as any).role !== 'admin') {
-        redirect('/dashboard');
-    }
-
     useEffect(() => {
-        fetchStats();
-    }, []);
+        if (status === 'unauthenticated') {
+            router.push('/auth/login');
+        } else if (session && (session.user as any).role !== 'admin') {
+            router.push('/dashboard');
+        } else if (status === 'authenticated') {
+            fetchStats();
+        }
+    }, [session, status, router]);
 
     const fetchStats = async () => {
         try {

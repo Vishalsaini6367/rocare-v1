@@ -3,23 +3,26 @@
 import { useState, useEffect } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { useSession } from 'next-auth/react';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Package, User, Phone, MapPin, Truck, CheckCircle, Clock, AlertCircle, Eye, MoreHorizontal, ArrowRight, TrendingUp, IndianRupee, Box } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function AdminOrdersPage() {
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
+    const router = useRouter();
     const [orders, setOrders] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState<'all' | 'Pending' | 'Confirmed' | 'Out for Delivery' | 'Delivered'>('all');
 
-    if (session && (session.user as any).role !== 'admin') {
-        redirect('/dashboard');
-    }
-
     useEffect(() => {
-        fetchOrders();
-    }, []);
+        if (status === 'unauthenticated') {
+            router.push('/auth/login');
+        } else if (session && (session.user as any).role !== 'admin') {
+            router.push('/dashboard');
+        } else if (status === 'authenticated') {
+            fetchOrders();
+        }
+    }, [session, status, router]);
 
     const fetchOrders = async () => {
         try {
