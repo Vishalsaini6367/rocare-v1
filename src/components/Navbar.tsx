@@ -14,9 +14,15 @@ export function Navbar() {
     useEffect(() => {
         if (session) {
             fetch('/api/profile', { cache: 'no-store' })
-                .then(res => res.json())
+                .then(res => {
+                    if (!res.ok) throw new Error("Fetch failed");
+                    return res.json();
+                })
                 .then(data => setUserProfile(data))
-                .catch(err => console.error("Error fetching profile:", err));
+                .catch(err => {
+                    console.error("Error fetching profile:", err);
+                    setUserProfile(null);
+                });
         }
     }, [session]);
 

@@ -21,7 +21,7 @@ export default function ComplaintDetailPage({ params }: { params: Promise<{ id: 
         try {
             const response = await fetch('/api/complaints');
             const data = await response.json();
-            const found = data.find((c: any) => c._id === id);
+            const found = Array.isArray(data) ? data.find((c: any) => c._id === id) : null;
             if (found) {
                 setComplaint(found);
             } else {
@@ -115,7 +115,7 @@ export default function ComplaintDetailPage({ params }: { params: Promise<{ id: 
                                     </div>
                                     <div>
                                         <span className="block text-xs font-extra-bold text-slate-400 uppercase tracking-widest mb-1">Logged Date</span>
-                                        <span className="text-xl font-bold text-slate-900 leading-none">{new Date(complaint.createdAt).toLocaleDateString()}</span>
+                                        <span className="text-xl font-bold text-slate-900 leading-none">{complaint.createdAt ? new Date(complaint.createdAt).toLocaleDateString() : 'N/A'}</span>
                                     </div>
                                 </div>
                             </div>

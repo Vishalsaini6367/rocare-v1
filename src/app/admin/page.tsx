@@ -32,10 +32,10 @@ export default function AdminDashboardPage() {
     };
 
     const statItems = [
-        { label: "Total Orders", value: stats?.totalOrders || "0", icon: Package, color: "blue", trend: stats?.pendingOrders ? `${stats.pendingOrders} NEW` : "STABLE" },
-        { label: "Active Service", value: stats?.totalComplaints || "0", icon: AlertCircle, color: "red", trend: stats?.pendingComplaints ? `${stats.pendingComplaints} PENDING` : "0" },
-        { label: "Total Products", value: stats?.totalProducts || "0", icon: ShoppingBag, color: "purple", trend: "+2" },
-        { label: "Active Users", value: stats?.totalUsers || "0", icon: Users, color: "green", trend: "LIVE" },
+        { label: "Total Orders", value: stats?.totalOrders ?? "0", icon: Package, color: "blue", trend: stats?.pendingOrders ? `${stats.pendingOrders} NEW` : "STABLE" },
+        { label: "Active Service", value: stats?.totalComplaints ?? "0", icon: AlertCircle, color: "red", trend: stats?.pendingComplaints ? `${stats.pendingComplaints} PENDING` : "0" },
+        { label: "Total Products", value: stats?.totalProducts ?? "0", icon: ShoppingBag, color: "purple", trend: "+2" },
+        { label: "Active Users", value: stats?.totalUsers ?? "0", icon: Users, color: "green", trend: "LIVE" },
     ];
 
     if (loading) return (
@@ -122,9 +122,9 @@ export default function AdminDashboardPage() {
                             <div className="space-y-8 md:space-y-10">
                                 {[
                                     { label: "SLA Compliance", val: stats?.completedComplaints || 0, max: stats?.totalComplaints || 1, color: "blue" },
-                                    { label: "Fulfilment Rate", val: (stats?.totalOrders - stats?.pendingOrders) || 0, max: stats?.totalOrders || 1, color: "green" },
+                                    { label: "Fulfilment Rate", val: (stats?.totalOrders || 0) - (stats?.pendingOrders || 0), max: stats?.totalOrders || 1, color: "green" },
                                 ].map((item, i) => {
-                                    const pct = Math.round((item.val / item.max) * 100);
+                                    const pct = Math.round((item.val / (item.max || 1)) * 100);
                                     return (
                                         <div key={i}>
                                             <div className="flex justify-between items-center mb-4 md:mb-6">

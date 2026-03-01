@@ -132,7 +132,7 @@ export default function DashboardPage() {
                                             <span className={`inline-block px-3 py-1 rounded-full text-[8px] md:text-[10px] font-black uppercase tracking-widest ${comp.status === 'Completed' ? 'bg-green-100 text-green-700' : comp.status === 'In Progress' ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700'} mb-1`}>
                                                 {comp.status}
                                             </span>
-                                            <span className="block text-[8px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest">{new Date(comp.createdAt).toLocaleDateString()}</span>
+                                            <span className="block text-[8px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest">{comp.createdAt ? new Date(comp.createdAt).toLocaleDateString() : 'Date N/A'}</span>
                                         </div>
                                     </Link>
                                 ))}
@@ -161,8 +161,12 @@ export default function DashboardPage() {
                                 {orders.map((order, i) => (
                                     <div key={i} className="bg-white/5 border border-white/10 p-4 md:p-6 rounded-2xl md:rounded-3xl flex items-center justify-between hover:bg-white/10 transition group/order active:scale-[0.98]">
                                         <div className="flex items-center space-x-4 md:space-x-6 overflow-hidden">
-                                            <div className="w-12 h-12 md:w-16 md:h-16 bg-white rounded-xl md:rounded-2xl overflow-hidden shadow-2xl p-2 shrink-0 group-hover/order:scale-105 transition duration-500">
-                                                <img src={order.productId?.image} className="w-full h-full object-contain mix-blend-multiply" />
+                                            <div className="w-12 h-12 md:w-16 md:h-16 bg-white rounded-xl md:rounded-2xl overflow-hidden shadow-2xl p-2 shrink-0 group-hover/order:scale-105 transition duration-500 flex items-center justify-center">
+                                                {order.productId?.image ? (
+                                                    <img src={order.productId.image} className="w-full h-full object-contain mix-blend-multiply" alt="" />
+                                                ) : (
+                                                    <Package className="w-6 h-6 text-slate-200" />
+                                                )}
                                             </div>
                                             <div className="overflow-hidden">
                                                 <h4 className="font-extrabold text-sm md:text-lg mb-1 truncate">{order.productId?.name}</h4>

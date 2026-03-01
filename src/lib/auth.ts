@@ -27,7 +27,6 @@ export const authOptions: NextAuthOptions = {
                     await dbConnect();
                     let adminUser = await User.findOne({ email: ADMIN_EMAIL });
                     if (!adminUser) {
-                        const bcrypt = (await import('bcryptjs')).default;
                         const hashed = await bcrypt.hash(ADMIN_PASSWORD, 12);
                         adminUser = await User.create({ name: 'Admin', email: ADMIN_EMAIL, password: hashed, role: 'admin' });
                     } else if (adminUser.role !== 'admin') {
