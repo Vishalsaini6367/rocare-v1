@@ -88,13 +88,16 @@ export default function EditProductPage() {
         }
     };
 
+    useEffect(() => {
+        if (showCamera && stream && videoRef.current) {
+            videoRef.current.srcObject = stream;
+        }
+    }, [showCamera, stream]);
+
     const startCamera = async () => {
         try {
-            const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
+            const mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
             setStream(mediaStream);
-            if (videoRef.current) {
-                videoRef.current.srcObject = mediaStream;
-            }
             setShowCamera(true);
         } catch (_err) {
             toast.error("Could not access camera");
@@ -133,7 +136,10 @@ export default function EditProductPage() {
             const response = await fetch(`/api/products/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
+                body: JSON.stringify({
+                    ...formData,
+                    price: Number(formData.price)
+                }),
             });
 
             if (response.ok) {

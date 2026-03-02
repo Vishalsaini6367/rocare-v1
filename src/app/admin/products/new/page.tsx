@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Navbar } from '@/components/Navbar';
 import { ShoppingBag, Tag, Image as ImageIcon, FileText, Loader2, ArrowLeft, Layers, ShieldCheck, HeartPulse, CheckCircle, Camera, Upload, X, Trash2 } from 'lucide-react';
@@ -57,13 +57,16 @@ export default function NewProductPage() {
         }
     };
 
+    useEffect(() => {
+        if (showCamera && stream && videoRef.current) {
+            videoRef.current.srcObject = stream;
+        }
+    }, [showCamera, stream]);
+
     const startCamera = async () => {
         try {
-            const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
+            const mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
             setStream(mediaStream);
-            if (videoRef.current) {
-                videoRef.current.srcObject = mediaStream;
-            }
             setShowCamera(true);
         } catch (_err) {
             toast.error("Could not access camera");
@@ -102,7 +105,10 @@ export default function NewProductPage() {
             const response = await fetch('/api/products', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
+                body: JSON.stringify({
+                    ...formData,
+                    price: Number(formData.price)
+                }),
             });
 
             if (response.ok) {
