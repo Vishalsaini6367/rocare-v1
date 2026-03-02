@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect, use, useCallback } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
@@ -24,17 +24,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     });
     const router = useRouter();
 
-    useEffect(() => {
-        fetchProduct();
-    }, [id]);
-
-    useEffect(() => {
-        if (session?.user?.name && !orderData.clientName) {
-            setOrderData(prev => ({ ...prev, clientName: session?.user?.name || '' }));
-        }
-    }, [session]);
-
-    const fetchProduct = async () => {
+    const fetchProduct = useCallback(async () => {
         try {
             const response = await fetch('/api/products');
             const data = await response.json();
@@ -45,12 +35,23 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 toast.error('Product not found');
                 router.push('/products');
             }
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to load product');
         } finally {
             setLoading(false);
         }
-    };
+    }, [id, router]);
+
+    useEffect(() => {
+        fetchProduct();
+    }, [id, fetchProduct]);
+
+    useEffect(() => {
+        if (session?.user?.name && !orderData.clientName) {
+            setOrderData(prev => ({ ...prev, clientName: session?.user?.name || '' }));
+        }
+    }, [session]);
+
 
     const getCurrentLocation = () => {
         if ("geolocation" in navigator) {
@@ -68,7 +69,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                             lng: longitude
                         }));
                         toast.success("Location identified!", { id: 'geo' });
-                    } catch (error) {
+                    } catch (_error) {
                         setOrderData(prev => ({
                             ...prev,
                             deliveryAddress: `${latitude}, ${longitude}`,
@@ -78,7 +79,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                         toast.success("Coordinates captured!", { id: 'geo' });
                     }
                 },
-                (error) => {
+                (_error) => {
                     toast.error("Location access denied. Please type manually.", { id: 'geo' });
                 }
             );
@@ -115,7 +116,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 const err = await response.json();
                 toast.error(err.message || 'Order failed');
             }
-        } catch (error) {
+        } catch (_error) {
             toast.error('Connection error');
         } finally {
             setOrderLoading(false);

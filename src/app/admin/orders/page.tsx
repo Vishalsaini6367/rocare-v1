@@ -4,12 +4,11 @@ import { useState, useEffect } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Package, User, Phone, MapPin, Truck, CheckCircle, Clock, AlertCircle, Eye, MoreHorizontal, ArrowRight, TrendingUp, IndianRupee, Box } from 'lucide-react';
+import { Package, User, Phone, MapPin, Clock, IndianRupee, Box } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function AdminOrdersPage() {
-    const { data: session, status } = useSession();
-    const router = useRouter();
+    const { status } = useSession();
     const [orders, setOrders] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState<'all' | 'Pending' | 'Confirmed' | 'Out for Delivery' | 'Delivered'>('all');
@@ -25,7 +24,7 @@ export default function AdminOrdersPage() {
             const response = await fetch('/api/orders', { cache: 'no-store' });
             const data = await response.json();
             setOrders(Array.isArray(data) ? data : []);
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to fetch orders');
         } finally {
             setLoading(false);
@@ -46,7 +45,7 @@ export default function AdminOrdersPage() {
             } else {
                 toast.error('Status update failed');
             }
-        } catch (error) {
+        } catch (_error) {
             toast.error('Network error');
         }
     };
@@ -91,7 +90,7 @@ export default function AdminOrdersPage() {
                     {['all', 'Pending', 'Confirmed', 'Out for Delivery', 'Delivered'].map((tab) => (
                         <button
                             key={tab}
-                            onClick={() => setActiveTab(tab as any)}
+                            onClick={() => setActiveTab(tab as 'all' | 'Pending' | 'Confirmed' | 'Out for Delivery' | 'Delivered')}
                             className={`px-4 md:px-8 py-2.5 md:py-3 rounded-[1rem] md:rounded-2xl font-bold text-xs md:text-sm transition-all duration-300 transform active:scale-95 whitespace-nowrap ${activeTab === tab ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' : 'text-slate-400 hover:text-blue-500 hover:bg-blue-50'}`}
                         >
                             {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -100,7 +99,7 @@ export default function AdminOrdersPage() {
                 </div>
 
                 <div className="grid gap-8 md:gap-10">
-                    {filteredOrders.map((order) => (
+                    {filteredOrders.map((order: any) => (
                         <div key={order._id} className="bg-white p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] shadow-xl border border-slate-100 relative overflow-hidden group">
                             {/* Status Badge - Repositioned for mobile */}
                             <div className="flex flex-col md:absolute md:top-0 md:right-0 p-0 md:p-10 mb-6 md:mb-0">
@@ -112,7 +111,7 @@ export default function AdminOrdersPage() {
                             <div className="grid grid-cols-1 md:grid-cols-4 gap-8 items-center">
                                 <div className="md:col-span-1 md:border-r border-slate-50 md:pr-8">
                                     <div className="w-full aspect-square max-w-[140px] md:max-w-full mx-auto bg-slate-50 rounded-2xl md:rounded-3xl p-4 flex items-center justify-center mb-4 md:mb-6 overflow-hidden">
-                                        <img src={order.productId?.image} className="w-full h-full object-contain mix-blend-multiply group-hover:scale-110 transition duration-500" />
+                                        <img src={order.productId?.image} alt={order.productId?.name || 'Product'} className="w-full h-full object-contain mix-blend-multiply group-hover:scale-110 transition duration-500" />
                                     </div>
                                     <h3 className="text-xl md:text-2xl font-black text-slate-900 leading-tight mb-2 truncate text-center md:text-left">{order.productId?.name}</h3>
                                     <div className="flex items-center justify-center md:justify-start text-blue-600 font-black text-xl md:text-2xl tracking-tighter">

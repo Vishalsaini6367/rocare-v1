@@ -19,8 +19,8 @@ export function Navbar() {
                     return res.json();
                 })
                 .then(data => setUserProfile(data))
-                .catch(err => {
-                    console.error("Error fetching profile:", err);
+                .catch(_err => {
+                    console.error("Error fetching profile:", _err);
                     setUserProfile(null);
                 });
         }
@@ -70,7 +70,7 @@ export function Navbar() {
                                     <Link href="/profile" className="flex items-center space-x-2 text-gray-700 bg-gray-50 pr-4 py-1.5 pl-1.5 rounded-full hover:bg-gray-100 transition whitespace-nowrap min-w-[120px]">
                                         <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden border-2 border-white shadow-sm">
                                             {userProfile?.image ? (
-                                                <img src={userProfile.image} className="w-full h-full object-cover" />
+                                                <img src={userProfile.image} alt="Profile" className="w-full h-full object-cover" />
                                             ) : (
                                                 <User className="w-4 h-4 text-blue-600" />
                                             )}

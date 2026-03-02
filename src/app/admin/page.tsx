@@ -4,12 +4,11 @@ import { useState, useEffect } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Box, ClipboardList, CheckCircle, Clock, AlertCircle, ShoppingBag, Plus, ArrowUpRight, ArrowRight, BarChart3, TrendingUp, Users, Activity, Package, Truck } from 'lucide-react';
+import { Plus, ArrowUpRight, ArrowRight, BarChart3, TrendingUp, Users, Activity, Package, Truck, ShoppingBag, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AdminDashboardPage() {
-    const { data: session, status } = useSession();
-    const router = useRouter();
+    const { status } = useSession();
     const [stats, setStats] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
@@ -24,7 +23,7 @@ export default function AdminDashboardPage() {
             const response = await fetch('/api/admin/stats');
             const data = await response.json();
             setStats(data);
-        } catch (error) {
+        } catch (_error) {
             console.error('Failed to fetch stats');
         } finally {
             setLoading(false);

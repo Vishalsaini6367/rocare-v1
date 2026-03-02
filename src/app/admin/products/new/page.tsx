@@ -45,7 +45,7 @@ export default function NewProductPage() {
                 videoRef.current.srcObject = mediaStream;
             }
             setShowCamera(true);
-        } catch (err) {
+        } catch (_err) {
             toast.error("Could not access camera");
         }
     };
@@ -91,7 +91,7 @@ export default function NewProductPage() {
                 const data = await response.json();
                 toast.error(data.message || 'Something went wrong');
             }
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to create product');
         } finally {
             setLoading(false);
@@ -230,7 +230,7 @@ export default function NewProductPage() {
                                             </div>
                                         ) : (
                                             <div className="relative rounded-[1.5rem] overflow-hidden border-2 border-blue-500/20 group/imgpreview">
-                                                <img src={formData.image} className="w-full h-48 object-cover" />
+                                                <img src={formData.image} alt="System Preview" className="w-full h-48 object-cover" />
                                                 <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover/imgpreview:opacity-100 transition flex items-center justify-center">
                                                     <button
                                                         type="button"
@@ -296,7 +296,7 @@ export default function NewProductPage() {
                             <div className="bg-white/10 rounded-[2.5rem] p-8 border border-white/10 backdrop-blur-sm group/preview">
                                 <div className="w-full aspect-[4/3] bg-white/5 rounded-[2rem] mb-8 flex items-center justify-center p-8 border border-white/5 overflow-hidden">
                                     {formData.image ? (
-                                        <img src={formData.image} className="w-full h-full object-contain mix-blend-screen" />
+                                        <img src={formData.image} alt="Catalog Preview" className="w-full h-full object-contain mix-blend-screen" />
                                     ) : (
                                         <ImageIcon className="w-16 h-16 text-white/10 animate-pulse" />
                                     )}

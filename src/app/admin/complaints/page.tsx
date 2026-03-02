@@ -4,11 +4,11 @@ import { useState, useEffect } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { ClipboardList, User, Phone, MapPin, FileText, CheckCircle, Clock, AlertCircle, Eye, MoreHorizontal, Activity, ArrowRight, TrendingUp } from 'lucide-react';
+import { ClipboardList, Phone, MapPin, FileText, CheckCircle, Clock, AlertCircle, ArrowRight } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function AdminComplaintsPage() {
-    const { data: session, status } = useSession();
+    const { status } = useSession();
     const router = useRouter();
     const [complaints, setComplaints] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -24,7 +24,7 @@ export default function AdminComplaintsPage() {
             const response = await fetch('/api/complaints', { cache: 'no-store' });
             const data = await response.json();
             setComplaints(Array.isArray(data) ? data : []);
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to fetch complaints');
         } finally {
             setLoading(false);
@@ -45,7 +45,7 @@ export default function AdminComplaintsPage() {
             } else {
                 toast.error('Failed to update status');
             }
-        } catch (error) {
+        } catch (_error) {
             toast.error('Something went wrong');
         }
     };
@@ -102,7 +102,7 @@ export default function AdminComplaintsPage() {
                     {['all', 'Pending', 'In Progress', 'Completed'].map((tab) => (
                         <button
                             key={tab}
-                            onClick={() => setActiveTab(tab as any)}
+                            onClick={() => setActiveTab(tab as 'all' | 'Pending' | 'In Progress' | 'Completed')}
                             className={`px-4 md:px-8 py-2.5 md:py-3 rounded-[1rem] md:rounded-2xl font-bold text-xs md:text-sm transition-all duration-300 transform active:scale-95 whitespace-nowrap ${activeTab === tab ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' : 'text-slate-400 hover:text-blue-500 hover:bg-blue-50'}`}
                         >
                             {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -111,13 +111,13 @@ export default function AdminComplaintsPage() {
                 </div>
 
                 <div className="grid grid-cols-1 gap-8 md:gap-12">
-                    {filteredComplaints.map((complaint) => (
+                    {filteredComplaints.map((complaint: any) => (
                         <div key={complaint._id} className="group bg-white p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] shadow-xl border border-slate-100 hover:shadow-2xl hover:shadow-blue-200/50 transition-all duration-300 relative overflow-hidden">
                             {/* Status Badge - Repositioned for mobile */}
                             <div className="flex flex-col md:absolute md:top-0 md:right-0 p-0 md:p-10 mb-6 md:mb-0 text-left md:text-right">
                                 <div className={`inline-flex items-center w-fit md:ml-auto px-4 md:px-6 py-1.5 md:py-2 border-2 rounded-full text-[10px] md:text-sm font-extrabold uppercase tracking-widest mb-2 md:mb-4 ${getStatusColor(complaint.status)}`}>
                                     {complaint.status === 'Pending' && <AlertCircle className="w-3.5 h-3.5 md:w-4 md:h-4 mr-2" />}
-                                    {complaint.status === 'In Progress' && <Activity className="w-3.5 h-3.5 md:w-4 md:h-4 mr-2 animate-pulse" />}
+                                    {complaint.status === 'In Progress' && <div className="w-3.5 h-3.5 md:w-4 md:h-4 mr-2 bg-blue-400 rounded-full animate-pulse" />}
                                     {complaint.status === 'Completed' && <CheckCircle className="w-3.5 h-3.5 md:w-4 md:h-4 mr-2" />}
                                     <span>{complaint.status}</span>
                                 </div>
@@ -174,7 +174,7 @@ export default function AdminComplaintsPage() {
                                     </div>
                                     <h4 className="text-lg md:text-2xl font-extrabold text-slate-900 mb-4 md:mb-6 group-hover:text-blue-600 transition duration-300">System MalfunctionAnalysis</h4>
                                     <p className="text-sm md:text-lg text-slate-500 font-medium italic leading-relaxed mb-6 md:mb-10 px-4 border-l-4 border-slate-100 p-3 md:p-4 bg-slate-50/50 rounded-r-xl md:rounded-r-2xl">
-                                        "{complaint.problemDescription}"
+                                        &ldquo;{complaint.problemDescription}&rdquo;
                                     </p>
 
                                     <div className="flex items-center space-x-6 md:space-x-12 pt-2">
@@ -185,7 +185,7 @@ export default function AdminComplaintsPage() {
                                         <div className="flex flex-col">
                                             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 leading-none">Priority</span>
                                             <div className="flex items-center space-x-2">
-                                                <TrendingUp className="w-3.5 h-3.5 text-amber-500" />
+                                                <div className="w-3.5 h-3.5 text-amber-500 font-bold">▲</div>
                                                 <span className="text-xs md:text-sm font-bold text-amber-600 italic uppercase">High</span>
                                             </div>
                                         </div>
@@ -213,11 +213,9 @@ export default function AdminComplaintsPage() {
                                     )}
 
                                     <button className="w-full py-4 md:py-5 border-2 border-slate-100 text-slate-400 font-bold rounded-xl md:rounded-2xl hover:bg-slate-50 hover:text-slate-900 transition flex items-center justify-center space-x-2 md:space-x-3">
-                                        <Eye className="w-4 h-4 md:w-5 md:h-5" />
                                         <span className="text-sm md:text-base">Inspect</span>
                                     </button>
                                     <button className="w-full py-4 md:py-5 border-2 border-slate-100 text-slate-400 font-bold rounded-xl md:rounded-2xl hover:bg-slate-50 hover:text-slate-900 transition flex items-center justify-center space-x-2 md:space-x-3">
-                                        <MoreHorizontal className="w-4 h-4 md:w-5 md:h-5" />
                                         <span className="text-sm md:text-base">Options</span>
                                     </button>
                                 </div>

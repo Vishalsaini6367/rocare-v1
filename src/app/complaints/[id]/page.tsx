@@ -28,7 +28,7 @@ export default function ComplaintDetailPage({ params }: { params: Promise<{ id: 
                 toast.error('Complaint not found');
                 router.push('/dashboard');
             }
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to fetch details');
         } finally {
             setLoading(false);
@@ -138,7 +138,7 @@ export default function ComplaintDetailPage({ params }: { params: Promise<{ id: 
                                 <div className="p-10 bg-slate-900 text-white rounded-[2.5rem] shadow-2xl relative group/desc transition duration-500 overflow-hidden">
                                     <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/10 rounded-full blur-3xl transform translate-x-16 -translate-y-16"></div>
                                     <p className="text-xl font-medium leading-relaxed italic relative z-10 text-white/90">
-                                        "{complaint.problemDescription}"
+                                        &ldquo;{complaint.problemDescription}&rdquo;
                                     </p>
                                     <div className="mt-8 pt-6 border-t border-white/10 flex items-center space-x-4">
                                         <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-amber-500">

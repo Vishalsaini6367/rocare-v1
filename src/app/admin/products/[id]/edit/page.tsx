@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { Navbar } from '@/components/Navbar';
 import { ShoppingBag, Tag, Image as ImageIcon, FileText, Loader2, ArrowLeft, Layers, ShieldCheck, HeartPulse, CheckCircle, Camera, Upload, X, Trash2 } from 'lucide-react';
@@ -25,13 +25,7 @@ export default function EditProductPage() {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
 
-    useEffect(() => {
-        if (id) {
-            fetchProduct();
-        }
-    }, [id]);
-
-    const fetchProduct = async () => {
+    const fetchProduct = useCallback(async () => {
         try {
             const response = await fetch(`/api/products/${id}`);
             if (response.ok) {
@@ -46,12 +40,18 @@ export default function EditProductPage() {
                 toast.error('Product not found');
                 router.push('/admin/products');
             }
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to load product');
         } finally {
             setLoading(false);
         }
-    };
+    }, [id, router]);
+
+    useEffect(() => {
+        if (id) {
+            fetchProduct();
+        }
+    }, [id, fetchProduct]);
 
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -76,7 +76,7 @@ export default function EditProductPage() {
                 videoRef.current.srcObject = mediaStream;
             }
             setShowCamera(true);
-        } catch (err) {
+        } catch (_err) {
             toast.error("Could not access camera");
         }
     };
@@ -122,7 +122,7 @@ export default function EditProductPage() {
                 const data = await response.json();
                 toast.error(data.message || 'Something went wrong');
             }
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to update product');
         } finally {
             setSaving(false);
@@ -267,7 +267,7 @@ export default function EditProductPage() {
                                             </div>
                                         ) : (
                                             <div className="relative rounded-[1.5rem] overflow-hidden border-2 border-blue-500/20 group/imgpreview">
-                                                <img src={formData.image} className="w-full h-48 object-cover" />
+                                                <img src={formData.image} alt="Product Preview" className="w-full h-48 object-cover" />
                                                 <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover/imgpreview:opacity-100 transition flex items-center justify-center">
                                                     <button
                                                         type="button"
@@ -333,7 +333,7 @@ export default function EditProductPage() {
                             <div className="bg-white/10 rounded-[2.5rem] p-8 border border-white/10 backdrop-blur-sm group/preview">
                                 <div className="w-full aspect-[4/3] bg-white/5 rounded-[2rem] mb-8 flex items-center justify-center p-8 border border-white/5 overflow-hidden">
                                     {formData.image ? (
-                                        <img src={formData.image} className="w-full h-full object-contain mix-blend-screen" />
+                                        <img src={formData.image} alt="Live Preview" className="w-full h-full object-contain mix-blend-screen" />
                                     ) : (
                                         <ImageIcon className="w-16 h-16 text-white/10 animate-pulse" />
                                     )}

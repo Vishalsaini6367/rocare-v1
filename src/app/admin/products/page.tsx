@@ -9,8 +9,7 @@ import Link from 'next/link';
 import toast from 'react-hot-toast';
 
 export default function AdminProductsPage() {
-    const { data: session, status } = useSession();
-    const router = useRouter();
+    const { status } = useSession();
     const [products, setProducts] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
@@ -28,7 +27,7 @@ export default function AdminProductsPage() {
                 const data = await response.json();
                 setProducts(data);
             }
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to load products');
         } finally {
             setLoading(false);
@@ -51,7 +50,7 @@ export default function AdminProductsPage() {
                 const data = await response.json();
                 toast.error(data.message || 'Deletion failed', { id: 'del-prod' });
             }
-        } catch (error) {
+        } catch (_error) {
             toast.error('Network error during deletion', { id: 'del-prod' });
         }
     };
@@ -140,7 +139,7 @@ export default function AdminProductsPage() {
                                             <div className="flex items-center space-x-6">
                                                 <div className="flex-shrink-0 h-16 w-16 bg-white border border-slate-100 rounded-2xl p-2 shadow-sm flex items-center justify-center overflow-hidden">
                                                     {product.image ? (
-                                                        <img className="h-full w-full object-contain mix-blend-multiply" src={product.image} alt="" />
+                                                        <img className="h-full w-full object-contain mix-blend-multiply" src={product.image} alt={product.name} />
                                                     ) : (
                                                         <ShoppingBag className="w-6 h-6 text-slate-200" />
                                                     )}
@@ -212,7 +211,7 @@ export default function AdminProductsPage() {
                                 <div className="flex items-center space-x-4">
                                     <div className="flex-shrink-0 h-16 w-16 bg-white border border-slate-100 rounded-xl p-2 shadow-sm flex items-center justify-center overflow-hidden">
                                         {product.image ? (
-                                            <img className="h-full w-full object-contain mix-blend-multiply" src={product.image} alt="" />
+                                            <img className="h-full w-full object-contain mix-blend-multiply" src={product.image} alt={product.name} />
                                         ) : (
                                             <ShoppingBag className="w-5 h-5 text-slate-200" />
                                         )}
