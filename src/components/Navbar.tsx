@@ -202,7 +202,7 @@ export function Navbar() {
                                     >
                                         <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center border-2 border-white shadow-xl overflow-hidden shrink-0">
                                             {userProfile?.image ? (
-                                                <img src={userProfile.image} className="w-full h-full object-cover" />
+                                                <img src={userProfile.image} alt="Profile" className="w-full h-full object-cover" />
                                             ) : (
                                                 <div className="bg-blue-600 w-full h-full flex items-center justify-center">
                                                     <User className="w-7 h-7 text-white" />

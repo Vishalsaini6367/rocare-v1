@@ -3,18 +3,20 @@
 import { useState, useEffect } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { useSession } from 'next-auth/react';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { ClipboardList, CheckCircle, Clock, AlertCircle, MessageSquarePlus, Activity, ArrowRight, Star, HeartPulse } from 'lucide-react';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 
 export default function UserComplaintsPage() {
     const { data: session } = useSession();
+    const router = useRouter();
     const [complaints, setComplaints] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
     if (session && (session.user as any).role === 'admin') {
-        redirect('/admin/complaints');
+        router.push('/admin/complaints');
+        return null;
     }
 
     useEffect(() => {
@@ -26,7 +28,7 @@ export default function UserComplaintsPage() {
             const response = await fetch('/api/complaints', { cache: 'no-store' });
             const data = await response.json();
             setComplaints(Array.isArray(data) ? data : []);
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to fetch complaints');
         } finally {
             setLoading(false);
@@ -95,7 +97,7 @@ export default function UserComplaintsPage() {
                                         </div>
                                         <h3 className="text-3xl font-extrabold text-slate-900 mb-6 group-hover:text-blue-600 transition tracking-tight">Support Ticket Analysis</h3>
                                         <p className="text-lg text-slate-500 font-medium italic leading-relaxed mb-10 max-w-2xl px-6 border-l-4 border-slate-200 p-6 bg-slate-50/50 rounded-r-3xl">
-                                            "{complaint.problemDescription}"
+                                            &ldquo;{complaint.problemDescription}&rdquo;
                                         </p>
 
                                         <div className="flex items-center space-x-12">

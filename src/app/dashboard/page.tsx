@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { useSession } from 'next-auth/react';
-import { redirect, useRouter } from 'next/navigation';
-import { ShoppingBag, MessageSquare, ClipboardList, User as UserIcon, ArrowRight, Activity, Clock, CheckCircle, Package, Truck, AlertCircle, Zap, Phone } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { ShoppingBag, MessageSquare, ClipboardList, User as UserIcon, ArrowRight, Activity, Clock, CheckCircle, Package, Truck, AlertCircle, Zap } from 'lucide-react';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 
@@ -14,6 +14,7 @@ export default function DashboardPage() {
     const [orders, setOrders] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const router = useRouter();
+    void router;
 
     useEffect(() => {
         if (status === 'authenticated') {
@@ -228,7 +229,7 @@ export default function DashboardPage() {
                             </h2>
                             <div className="p-8 bg-slate-50 rounded-[2rem] border-l-8 border-amber-400 shadow-inner group-hover/tip:border-blue-500 transition duration-500">
                                 <p className="text-slate-600 text-sm font-bold leading-relaxed italic">
-                                    "Replace your sediment filter every 6-9 months to double the lifespan of your RO membrane."
+                                    &ldquo;Replace your sediment filter every 6-9 months to double the lifespan of your RO membrane.&rdquo;
                                 </p>
                             </div>
                         </div>

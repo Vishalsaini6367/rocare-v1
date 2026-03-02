@@ -1,8 +1,7 @@
 import { Navbar } from '@/components/Navbar';
 import dbConnect from '@/lib/mongodb';
 import Product from '@/models/Product';
-import { ShoppingBag, Star, ShieldCheck, HeartPulse, Sparkles, Filter, ChevronRight, Droplet } from 'lucide-react';
-import Image from 'next/image';
+import { ShoppingBag, Star, ShieldCheck, HeartPulse, Filter, Droplet } from 'lucide-react';
 import Link from 'next/link';
 
 export const revalidate = 60; // Revalidate every minute

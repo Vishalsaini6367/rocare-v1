@@ -24,7 +24,7 @@ export function SplashLoader() {
             setIsVisible(false);
             try {
                 sessionStorage.setItem('rocare_splash_seen_v2', 'true');
-            } catch (e) {
+            } catch (_e) {
                 // Ignore storage errors on exit
             }
             setTimeout(() => setShouldRender(false), 1000);

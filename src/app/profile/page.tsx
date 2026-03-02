@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { useSession } from 'next-auth/react';
 import { redirect, useRouter } from 'next/navigation';
-import { User as UserIcon, Mail, Shield, Loader2, Save, Trash2, ArrowLeft, Droplet, Star, Clock, Camera, Upload, X } from 'lucide-react';
+import { User as UserIcon, Mail, Shield, Loader2, Save, Trash2, Droplet, Star, Clock, Camera, Upload, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function ProfilePage() {
@@ -22,7 +22,7 @@ export default function ProfilePage() {
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const router = useRouter();
+    const router = useRouter(); void router;
 
     // Format a date to IST locale string
     const toIST = (isoDate: string, opts: Intl.DateTimeFormatOptions) =>
@@ -135,7 +135,7 @@ export default function ProfilePage() {
             const response = await fetch('/api/profile', { cache: 'no-store' });
             const data = await response.json();
             setFormData({ name: data.name, email: data.email, image: data.image || '', createdAt: data.createdAt || '' });
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to fetch profile');
         } finally {
             setLoading(false);
@@ -200,7 +200,7 @@ export default function ProfilePage() {
                             <div className="flex flex-col items-center mb-8 md:mb-10 relative z-10">
                                 <div className="w-20 h-20 md:w-24 md:h-24 bg-white/10 rounded-[1.8rem] md:rounded-[2.5rem] flex items-center justify-center mb-6 md:mb-8 border border-white/10 overflow-hidden shadow-2xl group-hover/card:scale-110 transition duration-500">
                                     {formData.image ? (
-                                        <img src={formData.image} className="w-full h-full object-cover" />
+                                        <img src={formData.image} alt="Profile" className="w-full h-full object-cover" />
                                     ) : (
                                         <span className="text-3xl md:text-4xl font-black text-blue-500">{formData.name[0]}</span>
                                     )}
@@ -265,7 +265,7 @@ export default function ProfilePage() {
                                     <div className="flex flex-col sm:flex-row items-center gap-8">
                                         <div className="relative w-28 h-28 md:w-32 md:h-32 rounded-[2rem] bg-slate-100 border-4 border-white shadow-xl overflow-hidden group/pfp transition duration-500">
                                             {formData.image ? (
-                                                <img src={formData.image} className="w-full h-full object-cover" />
+                                                <img src={formData.image} alt="Profile" className="w-full h-full object-cover" />
                                             ) : (
                                                 <div className="w-full h-full flex items-center justify-center bg-blue-50 text-blue-600 font-black text-3xl md:text-4xl">
                                                     {formData.name[0]}

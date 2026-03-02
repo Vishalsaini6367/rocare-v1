@@ -71,7 +71,7 @@ export default function Home() {
                   </div>
                   <p className="text-[10px] font-bold uppercase tracking-widest leading-tight">
                     Install ROCare App: <br />
-                    Tap Share + "Add to Home Screen"
+                    Tap Share + &quot;Add to Home Screen&quot;
                   </p>
                 </div>
               </div>
