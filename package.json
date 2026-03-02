@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build --webpack",
+    "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "next lint"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
@@ -14,7 +14,7 @@
     "framer-motion": "^12.34.3",
     "lucide-react": "^0.575.0",
     "mongoose": "^9.2.3",
-    "next": "^15.1.6",
+    "next": "15.1.7",
     "next-auth": "^4.24.13",
     "react": "19.0.0",
     "react-dom": "19.0.0",
