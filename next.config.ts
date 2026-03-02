@@ -1,7 +1,5 @@
 import type { NextConfig } from "next";
 
-// Disable next-pwa automatic sw generation to use our custom sw.js
-// next-pwa's auto-generated sw causes iOS PWA crashes with stale caches
 const nextConfig: NextConfig = {
   // Ensure headers allow PWA Service Worker scope
   async headers() {
