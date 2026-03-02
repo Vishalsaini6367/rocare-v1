@@ -22,6 +22,24 @@ export default function NewProductPage() {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
 
+    const compressImage = (dataUrl: string): Promise<string> => {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const MAX = 800;
+                let w = img.width, h = img.height;
+                if (w > h) { h = Math.round(h * MAX / w); w = MAX; } else { w = Math.round(w * MAX / h); h = MAX; }
+                canvas.width = w;
+                canvas.height = h;
+                const ctx = canvas.getContext('2d')!;
+                ctx.drawImage(img, 0, 0, w, h);
+                resolve(canvas.toDataURL('image/jpeg', 0.8));
+            };
+            img.src = dataUrl;
+        });
+    };
+
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -30,8 +48,10 @@ export default function NewProductPage() {
                 return;
             }
             const reader = new FileReader();
-            reader.onloadend = () => {
-                setFormData(prev => ({ ...prev, image: reader.result as string }));
+            reader.onloadend = async () => {
+                const compressed = await compressImage(reader.result as string);
+                setFormData(prev => ({ ...prev, image: compressed }));
+                toast.success("Photo optimized!");
             };
             reader.readAsDataURL(file);
         }
@@ -58,17 +78,18 @@ export default function NewProductPage() {
         setShowCamera(false);
     };
 
-    const captureImage = () => {
+    const captureImage = async () => {
         if (videoRef.current && canvasRef.current) {
             const context = canvasRef.current.getContext('2d');
             if (context) {
                 canvasRef.current.width = videoRef.current.videoWidth;
                 canvasRef.current.height = videoRef.current.videoHeight;
                 context.drawImage(videoRef.current, 0, 0);
-                const dataUrl = canvasRef.current.toDataURL('image/jpeg');
-                setFormData(prev => ({ ...prev, image: dataUrl }));
+                const raw = canvasRef.current.toDataURL('image/jpeg', 1.0);
+                const compressed = await compressImage(raw);
+                setFormData(prev => ({ ...prev, image: compressed }));
                 stopCamera();
-                toast.success("Image captured!");
+                toast.success("Image captured and optimized!");
             }
         }
     };
@@ -145,7 +166,7 @@ export default function NewProductPage() {
                                             <input
                                                 type="text"
                                                 required
-                                                className="block w-full pl-16 pr-6 py-5 bg-slate-50 border-2 border-slate-50 rounded-[1.5rem] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-medium"
+                                                className="block w-full pl-16 pr-6 py-5 bg-slate-50 border-2 border-slate-50 rounded-[1.5rem] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-medium text-base sm:text-lg"
                                                 placeholder="e.g. PureStream Extreme RO"
                                                 value={formData.name}
                                                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -163,7 +184,7 @@ export default function NewProductPage() {
                                                 <input
                                                     type="number"
                                                     required
-                                                    className="block w-full pl-16 pr-6 py-5 bg-slate-50 border-2 border-slate-50 rounded-[1.5rem] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-medium"
+                                                    className="block w-full pl-16 pr-6 py-5 bg-slate-50 border-2 border-slate-50 rounded-[1.5rem] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-medium text-base sm:text-lg"
                                                     placeholder="0.00"
                                                     value={formData.price}
                                                     onChange={(e) => setFormData({ ...formData, price: e.target.value })}
@@ -176,7 +197,7 @@ export default function NewProductPage() {
                                                 <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
                                                     <Layers className="h-5 w-5 text-slate-400 group-hover/field:text-blue-500 transition" />
                                                 </div>
-                                                <select className="block w-full pl-16 pr-6 py-5 bg-slate-50 border-2 border-slate-50 rounded-[1.5rem] text-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-medium appearance-none">
+                                                <select className="block w-full pl-16 pr-6 py-5 bg-slate-50 border-2 border-slate-50 rounded-[1.5rem] text-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-medium appearance-none text-base sm:text-lg">
                                                     <option>Domestic RO</option>
                                                     <option>Commercial RO</option>
                                                     <option>Industrial Plant</option>
@@ -220,7 +241,7 @@ export default function NewProductPage() {
                                                         </div>
                                                         <input
                                                             type="text"
-                                                            className="block w-full pl-16 pr-6 py-5 bg-slate-50 border-2 border-slate-50 rounded-[1.5rem] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-medium"
+                                                            className="block w-full pl-16 pr-6 py-5 bg-slate-50 border-2 border-slate-50 rounded-[1.5rem] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-medium text-base sm:text-lg"
                                                             placeholder="Or paste Image URL here..."
                                                             value={formData.image}
                                                             onChange={(e) => setFormData({ ...formData, image: e.target.value })}
@@ -253,7 +274,7 @@ export default function NewProductPage() {
                                             <textarea
                                                 required
                                                 rows={6}
-                                                className="block w-full pl-16 pr-6 py-6 bg-slate-50 border-2 border-slate-50 rounded-[1.5rem] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-medium resize-none"
+                                                className="block w-full pl-16 pr-6 py-6 bg-slate-50 border-2 border-slate-50 rounded-[1.5rem] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-medium resize-none text-base sm:text-lg"
                                                 placeholder="Describe the multi-stage filtration process and smart features..."
                                                 value={formData.description}
                                                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
