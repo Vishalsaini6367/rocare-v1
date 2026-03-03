@@ -75,7 +75,7 @@ export default async function ProductsPage() {
                                     <span className="ml-2 text-[10px] md:text-xs font-bold text-slate-500">4.9 (124)</span>
                                 </div>
                                 <h3 className="mb-4 text-slate-900 group-hover:text-blue-600 transition truncate w-full">{product.name}</h3>
-                                <p className="text-sm md:text-base italic mb-6 line-clamp-2 md:line-clamp-3">
+                                <p className="text-sm md:text-base italic mb-6 line-clamp-2 md:line-clamp-3 whitespace-pre-wrap">
                                     {product.description}
                                 </p>
                                 <div className="flex flex-wrap items-center justify-center gap-4 text-slate-400 font-bold text-[10px] uppercase tracking-wider mb-4">

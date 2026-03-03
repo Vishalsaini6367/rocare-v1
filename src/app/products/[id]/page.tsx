@@ -4,7 +4,8 @@ import { useState, useEffect, use, useCallback } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { ArrowLeft, ShoppingBag, Star, ShieldCheck, HeartPulse, Sparkles, CheckCircle, Droplet, Zap, Info, MapPin, Phone, User, Loader2, X } from 'lucide-react';
+import { ArrowLeft, ShoppingBag, Star, ShieldCheck, HeartPulse, Sparkles, CheckCircle, Droplet, Zap, Info, MapPin, Phone, User, Loader2, X, Maximize2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 
@@ -14,6 +15,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     const [product, setProduct] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [showOrderModal, setShowOrderModal] = useState(false);
+    const [isZoomed, setIsZoomed] = useState(false);
+    const [zoomScale, setZoomScale] = useState(1);
     const [orderLoading, setOrderLoading] = useState(false);
     const [orderData, setOrderData] = useState({
         clientName: session?.user?.name || '',
@@ -190,13 +193,19 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-12">
                     {/* Left Column: Image Container */}
                     <div className="space-y-6 md:space-y-10 group/img">
-                        <div className="bg-white p-8 md:p-16 rounded-[2.5rem] md:rounded-[4rem] shadow-2xl border border-slate-100 relative overflow-hidden flex items-center justify-center aspect-square shadow-blue-200/20 group-hover/img:shadow-blue-300/40 transition duration-500 border-2 border-transparent group-hover/img:border-blue-600/10">
+                        <div
+                            onClick={() => setIsZoomed(true)}
+                            className="bg-white p-8 md:p-16 rounded-[2.5rem] md:rounded-[4rem] shadow-2xl border border-slate-100 relative overflow-hidden flex items-center justify-center aspect-square shadow-blue-200/20 group-hover/img:shadow-blue-300/40 transition duration-500 border-2 border-transparent group-hover/img:border-blue-600/10 cursor-zoom-in"
+                        >
                             <div className="absolute top-0 right-0 w-48 md:w-64 h-48 md:h-64 bg-blue-600/5 rounded-full blur-3xl transform translate-x-24 md:translate-x-32 -translate-y-24 md:-translate-y-32"></div>
                             {product.image ? (
                                 <img src={product.image} alt={product.name} className="w-full h-full object-contain mix-blend-multiply drop-shadow-2xl transform group-hover/img:scale-110 transition duration-700 p-4" />
                             ) : (
                                 <Droplet className="w-24 h-24 md:w-48 md:h-48 text-blue-200 animate-pulse" />
                             )}
+                            <div className="absolute top-6 right-6 p-3 bg-white/80 backdrop-blur-md rounded-2xl opacity-0 group-hover/img:opacity-100 transition-all duration-300 shadow-lg border border-slate-100">
+                                <Maximize2 className="w-5 h-5 text-blue-600" />
+                            </div>
                             <div className="absolute bottom-6 md:bottom-10 left-6 md:left-10 flex space-x-4">
                                 <div className="px-4 md:px-6 py-1.5 md:py-2 bg-slate-900 text-white rounded-full text-[8px] md:text-[10px] font-extrabold uppercase tracking-widest flex items-center shadow-2xl">
                                     <Sparkles className="w-2.5 h-2.5 md:w-3 md:h-3 mr-1.5 md:mr-2 text-amber-500" />
@@ -231,7 +240,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                             <div className="space-y-6 md:space-y-8 relative z-10 md:max-w-[70%]">
                                 <div>
                                     <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 md:mb-4 flex items-center"><Info className="w-3.5 h-3.5 mr-2" /> Product Specification</h3>
-                                    <p className="text-base md:text-xl text-slate-500 font-medium italic leading-relaxed">
+                                    <p className="text-base md:text-xl text-slate-500 font-medium italic leading-relaxed whitespace-pre-wrap">
                                         {product.description}
                                     </p>
                                 </div>
@@ -381,6 +390,64 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                     </div>
                 </div>
             )}
+            {/* Image Zoom Modal */}
+            <AnimatePresence>
+                {isZoomed && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[200] bg-slate-900/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-12 cursor-zoom-out"
+                        onClick={() => {
+                            setIsZoomed(false);
+                            setZoomScale(1);
+                        }}
+                        onWheel={(e) => {
+                            const delta = e.deltaY;
+                            setZoomScale(prev => Math.min(Math.max(prev - delta * 0.001, 0.5), 3));
+                        }}
+                    >
+                        <motion.button
+                            className="absolute top-8 right-8 p-4 bg-white/10 text-white hover:bg-white/20 rounded-full transition-all z-[210] cursor-pointer"
+                            whileHover={{ rotate: 90 }}
+                        >
+                            <X className="w-8 h-8" />
+                        </motion.button>
+
+                        <div
+                            className="relative w-full h-full flex items-center justify-center overflow-hidden"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <motion.img
+                                initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                                animate={{ scale: zoomScale, opacity: 1, y: 0 }}
+                                exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                                src={product.image}
+                                alt={product.name}
+                                className={`max-w-full max-h-full object-contain drop-shadow-[0_0_50px_rgba(255,255,255,0.1)] rounded-3xl ${zoomScale > 1 ? 'cursor-grab active:cursor-grabbing' : 'cursor-zoom-in'}`}
+                                drag={zoomScale > 1}
+                                dragConstraints={{ left: -500, right: 500, top: -500, bottom: 500 }}
+                                dragElastic={0.1}
+                                onClick={() => setZoomScale(zoomScale === 1 ? 2 : 1)}
+                            />
+                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center space-y-2 pointer-events-none">
+                                <div className="text-white/40 text-[10px] font-bold uppercase tracking-[0.3em] bg-black/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/5">
+                                    {zoomScale > 1 ? 'Drag to Move • Scroll to Zoom • Tap to Reset' : 'Tap to Zoom • Scroll to Zoom • Close'}
+                                </div>
+                                <div className="flex items-center space-x-2">
+                                    <div className="h-1 w-12 bg-white/10 rounded-full overflow-hidden">
+                                        <motion.div
+                                            className="h-full bg-blue-500"
+                                            animate={{ width: `${(zoomScale - 0.5) / 2.5 * 100}%` }}
+                                        />
+                                    </div>
+                                    <span className="text-[10px] font-black text-white/20 tracking-widest">{(zoomScale * 100).toFixed(0)}%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 }
