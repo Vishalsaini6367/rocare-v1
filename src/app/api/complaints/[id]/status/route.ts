@@ -24,6 +24,15 @@ export async function PATCH(req: NextRequest, { params }: any) {
         if (!complaint) {
             return NextResponse.json({ message: 'Complaint not found' }, { status: 404 });
         }
+
+        // Notify user
+        const { notifyUser } = await import('@/lib/push');
+        await notifyUser(complaint.userId.toString(), {
+            title: 'Complaint Status Updated',
+            body: `Your complaint status has been updated to: ${status}`,
+            url: '/complaints'
+        });
+
         return NextResponse.json(complaint);
     } catch (error: any) {
         return NextResponse.json({ message: error.message }, { status: 500 });

@@ -24,6 +24,15 @@ export async function PATCH(req: NextRequest, { params }: any) {
         if (!order) {
             return NextResponse.json({ message: 'Order not found' }, { status: 404 });
         }
+
+        // Notify user
+        const { notifyUser } = await import('@/lib/push');
+        await notifyUser(order.userId.toString(), {
+            title: 'Order Status Updated',
+            body: `Your order status has been updated to: ${status}`,
+            url: '/dashboard'
+        });
+
         return NextResponse.json(order);
     } catch (error: any) {
         return NextResponse.json({ message: error.message }, { status: 500 });

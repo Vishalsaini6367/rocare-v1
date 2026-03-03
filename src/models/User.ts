@@ -26,6 +26,15 @@ const UserSchema = new mongoose.Schema(
             type: String,
             default: '',
         },
+        pushSubscriptions: [
+            {
+                endpoint: String,
+                keys: {
+                    p256dh: String,
+                    auth: String,
+                },
+            },
+        ],
     },
     { timestamps: true }
 );

@@ -34,6 +34,15 @@ export async function POST(req: NextRequest) {
         });
 
         await newOrder.save();
+
+        // Notify admins
+        const { notifyAdmins } = await import('@/lib/push');
+        await notifyAdmins({
+            title: 'New Product Order',
+            body: `New order from ${clientName} for amount ₹${totalAmount}`,
+            url: '/admin/orders'
+        });
+
         return NextResponse.json({ message: 'Order placed successfully!', orderId: newOrder._id }, { status: 201 });
     } catch (error: any) {
         return NextResponse.json({ message: error.message }, { status: 500 });

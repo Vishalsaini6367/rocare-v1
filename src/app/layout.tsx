@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { SplashLoader } from "@/components/SplashLoader";
+import NotificationHandler from "@/components/NotificationHandler";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -54,6 +55,7 @@ export default function RootLayout({
       >
         <Providers>
           <SplashLoader />
+          <NotificationHandler />
           {children}
         </Providers>
       </body>

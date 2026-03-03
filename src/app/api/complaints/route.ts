@@ -55,6 +55,14 @@ export async function POST(req: NextRequest) {
             lng,
         });
 
+        // Notify admins
+        const { notifyAdmins } = await import('@/lib/push');
+        await notifyAdmins({
+            title: 'New Service Complaint',
+            body: `New complaint from ${clientName}: ${problemDescription}`,
+            url: '/admin/complaints'
+        });
+
         return NextResponse.json(complaint, { status: 201 });
     } catch (error: any) {
         return NextResponse.json({ message: error.message }, { status: 500 });
