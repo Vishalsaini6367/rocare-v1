@@ -1,15 +1,23 @@
 import webpush from 'web-push';
 
-const publicVapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!;
-const privateVapidKey = process.env.VAPID_PRIVATE_KEY!;
+const publicVapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+const privateVapidKey = process.env.VAPID_PRIVATE_KEY;
 
-webpush.setVapidDetails(
-    'mailto:support@rocare.com',
-    publicVapidKey,
-    privateVapidKey
-);
+if (publicVapidKey && privateVapidKey) {
+    webpush.setVapidDetails(
+        'mailto:support@rocare.com',
+        publicVapidKey,
+        privateVapidKey
+    );
+} else {
+    console.warn('VAPID keys are not set. Push notifications will not work.');
+}
 
 export async function sendNotification(subscription: any, payload: any) {
+    if (!publicVapidKey || !privateVapidKey) {
+        console.error('Cannot send notification: VAPID keys are missing');
+        return;
+    }
     try {
         await webpush.sendNotification(subscription, JSON.stringify(payload));
     } catch (error) {
